@@ -8,6 +8,11 @@ import UCI_HAR_Dataset as UCI_HAR
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
+#auto features names f1, f2 ..
+auto_feats_names = []
+for i in range(768):
+	auto_feats_names.append("f"+str(i))
+
 
 def train_CNN_feature_extractor(datapath):
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
@@ -45,10 +50,6 @@ def export_CNN_features(datapath):
 	clf.loadBestWeights()
 	auto_features = clf.get_layer_output(X_train,"automatic_features")
 	print("Features shape: ",auto_features.shape)
-	#auto features names f1, f2 ..
-	auto_feats_names = []
-	for i in range(768):
-		auto_feats_names.append("f"+str(i))
 	auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv('auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
