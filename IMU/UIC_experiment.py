@@ -54,7 +54,7 @@ def export_CNN_features(datapath):
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv('auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
 	
-def plot_features_PCA():
+def plot_features_PCA(datapath):
 	cnn = "CNN3"
 	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
@@ -82,7 +82,7 @@ def mainMenu():
 		export_CNN_features(ucihar_datapath)
 		return False
 	if sel == "3":
-		plot_features_PCA()
+		plot_features_PCA(ucihar_datapath)
 		return False
 	else:
 		return True
