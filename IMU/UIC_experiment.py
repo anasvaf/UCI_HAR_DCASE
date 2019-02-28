@@ -109,19 +109,19 @@ def train_CNN_feature_extractor(datapath):
 
 
 	
-def export_CNN_features(datapath):
+def export_CNN_features(datapath,clf,clf_name):
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
 	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
-	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
+	#clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
 	clf.loadBestWeights()
 	auto_features = clf.get_layer_output(X_train,"automatic_features")
 	print("Features shape: ",auto_features.shape)
 	auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
 	print(auto_feats_df.head())
-	auto_feats_df.to_csv('auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
+	auto_feats_df.to_csv('auto_train_features_'+clf_name+'.csv.gz',compression='gzip',index=False,header=None)
 	
 def plot_features_PCA(datapath):
 	cnn = "CNN3"
@@ -182,7 +182,23 @@ def mainMenu():
 		train_CNN_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
-		export_CNN_features(ucihar_datapath)
+		clf_1CNN_k2 = Classifiers.Hybrid_1CNN_k2()
+		export_CNN_features(ucihar_datapath,clf_1CNN_k2,"1CNN_k2")
+		clf_2CNN_k2 = Classifiers.Hybrid_2CNN_k2()
+		export_CNN_features(ucihar_datapath,clf_2CNN_k2,"2CNN_k2")
+		clf_3CNN_k2 = Classifiers.Hybrid_3CNN_k2()
+		export_CNN_features(ucihar_datapath,clf_3CNN_k2,"3CNN_k2")
+		clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2()
+		export_CNN_features(ucihar_datapath,clf_4CNN_k64,"4CNN_k2")
+		#gen featurs kernel size
+		clf_3CNN_k8 = Classifiers.Hybrid_3CNN_k8()
+		export_CNN_features(ucihar_datapath,clf_3CNN_k8,"3CNN_k8")
+		clf_3CNN_k16 = Classifiers.Hybrid_3CNN_k16()
+		export_CNN_features(ucihar_datapath,clf_3CNN_k16,"3CNN_k16")
+		clf_3CNN_k32 = Classifiers.Hybrid_3CNN_k32()
+		export_CNN_features(ucihar_datapath,clf_3CNN_k32,"3CNN_k32")
+		clf_3CNN_k64 = Classifiers.Hybrid_3CNN_k64()
+		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64")
 		return False
 	if sel == "3":
 		plot_features_PCA(ucihar_datapath)
