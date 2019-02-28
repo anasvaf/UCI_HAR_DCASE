@@ -59,9 +59,9 @@ def plot_features_PCA(datapath):
 	pca = PCA(n_components=3, svd_solver='arpack')
 	X = train_X_df.values
 	reduced_X = pca.fit_transform(X)
-	print(reduced_X.head())
-	print(train_y_df.head())
 	reduced_df = pd.DataFrame(reduced_X,columns=['x','y','z'])
+	print(reduced_df.head())
+	print(train_y_df.head())
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
 	
 
