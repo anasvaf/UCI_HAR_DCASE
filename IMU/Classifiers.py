@@ -190,7 +190,7 @@ class Hybrid_CNN_MLP(BaseClassifier):
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
 
-class Hybrid_1_CNN_k2(BaseClassifier):
+class Hybrid_1CNN_k2(BaseClassifier):
 	def __init__(self,patience=25,name="clf",fontSize=16):
 		name = name + "_1CNN_k2_"
 		super().__init__(name,patience,fontSize)
