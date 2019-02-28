@@ -1,7 +1,9 @@
 import numpy as np
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
 import Classifiers
 import UCI_HAR_Dataset as UCI_HAR
-from sklearn.model_selection import train_test_split
+
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
