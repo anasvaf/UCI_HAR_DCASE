@@ -166,7 +166,7 @@ class Hybrid_CNN_MLP(BaseClassifier):
 		self.model = Sequential()
 		#(?,160,3) -> (?,80,6)
 		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,9),kernel_size=16,padding='same',activation='relu', name="layer_1") )
+		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=16,padding='same',activation='relu', name="layer_1") )
 		self.model.add(MaxPooling1D())
 		#(?,80,6) -> (?,40,12)
 		##UCI (?,64,12) -> (?,32,24)
