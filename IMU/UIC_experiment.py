@@ -43,7 +43,11 @@ def export_CNN_features(datapath):
 	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
 	clf.loadBestWeights()
 	auto_features = clf.get_layer_output(X_train,"automatic_features")
-	print("Features shape: ",train_automatic_features.shape)
+	print("Features shape: ",auto_features.shape)
+	#auto features names f1, f2 ..
+	auto_feats_names = []
+	for i in range(768):
+		auto_feats_names.append("f"+str(i))
 	auto_feats_df = pd.DataFrame(train_automatic_features,columns=auto_feats_names)
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv(datapath+'train/auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
