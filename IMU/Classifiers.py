@@ -147,3 +147,48 @@ class BaseClassifier:
 
 	def reset_states(self):
 		self.model.reset_states()
+class UCI_NN_MLP(BaseClassifier):
+	def __init__(self,patience,name,fontSize=16):
+		self.name = name
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		self.model.add( Dense(1024,input_dim=561,activation='relu', name="layer_1") )
+		self.model.add( Dense(1024,activation='relu', name="layer_2") )
+		self.model.add( Dense(512,activation='relu', name="layer_3") )
+		self.model.add( Dense(6,activation='linear',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
+
+class Hybrid_CNN_MLP(BaseClassifier):
+	def __init__(self,patience=25,name="clf",fontSize=16):
+		name = name + "_hybrid_CNN_MLP_"
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		#(?,160,3) -> (?,80,6)
+		##UCI (?,128,6) -> (?,64,12)
+		self.model.add( Conv1D(12,input_shape=(128,9),kernel_size=16,padding='same',activation='relu', name="layer_1") )
+		self.model.add(MaxPooling1D())
+		#(?,80,6) -> (?,40,12)
+		##UCI (?,64,12) -> (?,32,24)
+		self.model.add( Conv1D(24,kernel_size=8,padding='same',activation='relu', name="layer_2") )
+		self.model.add(MaxPooling1D())
+		#(?,40,12) -> (?,20,24)
+		##UCI (?,32,24) -> (?,16,48)
+		self.model.add( Conv1D(48,kernel_size=4,padding='same',activation='relu', name="layer_3") )
+		self.model.add(MaxPooling1D())
+
+		#self.model.add( Conv1D(96,kernel_size=2,padding='same',activation='relu', name="layer_3b") )
+		#self.model.add(MaxPooling1D())
+		#(?,480)
+		#UCI (?,768)
+		self.model.add(Flatten(name="automatic_features"))
+		#for multilabel DO NOT use softmax use sigmoid
+		#self.model.add( Dense(1400,activation='relu', name="layer_4") )
+		self.model.add( Dense(1024,activation='relu', name="layer_5") )
+		self.model.add( Dense(512,activation='relu', name="layer_6") )
+		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
+		self.name2layer = {}
+		for layer in self.model.layers:
+			self.name2layer[layer.name] = layer
