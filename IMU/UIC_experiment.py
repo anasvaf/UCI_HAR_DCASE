@@ -14,13 +14,10 @@ def train_CNN_feature_extractor(datapath):
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
-
 	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
-
-	labels_test[:] = [ y -1 for y in labels_test ]
-
+	labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
 	print(np.unique( np.array(lab_tr)  ))
 	print(np.unique( np.array(labels_test)  ))
 
@@ -28,16 +25,30 @@ def train_CNN_feature_extractor(datapath):
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
 
-	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_LSTM_original_")
+	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
 	clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
 	clf.loadBestWeights()
 	predictions = clf.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	
-	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_LSTM_original_report.txt")
-	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=True,saveFig=True,filename="CNN_LSTM_original_CM.png")
+	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
+	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
 	  
-	  
+def export_CNN_features(datapath):
+	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
+	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
+	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
+	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
+	print("Data size:", len(X_train), " - ", len(X_train[0]))
+	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
+	clf.loadBestWeights()
+	auto_features = clf.get_layer_output(X_train,"automatic_features")
+	print("Features shape: ",train_automatic_features.shape)
+	auto_feats_df = pd.DataFrame(train_automatic_features,columns=auto_feats_names)
+	print(auto_feats_df.head())
+	auto_feats_df.to_csv(datapath+'train/auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
+	
+
 
 def mainMenu():
 	#change this to point UCI_HAR data path
@@ -47,8 +58,8 @@ def mainMenu():
 	if sel == "1":
 		train_CNN_feature_extractor(ucihar_datapath)
 		return False
-	if sel = "2":
-		print("TO DO")
+	if sel == "2":
+		export_CNN_features(ucihar_datapath)
 		return False
 	else:
 		return True
