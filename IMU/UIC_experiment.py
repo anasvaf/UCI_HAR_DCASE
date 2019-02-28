@@ -189,7 +189,7 @@ def mainMenu():
 		clf_3CNN_k2 = Classifiers.Hybrid_3CNN_k2(name="3CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k2,"3CNN_k2")
 		clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2(name="4CNN_k2")
-		export_CNN_features(ucihar_datapath,clf_4CNN_k64,"4CNN_k2")
+		export_CNN_features(ucihar_datapath,clf_4CNN_k2,"4CNN_k2")
 		#gen featurs kernel size
 		clf_3CNN_k8 = Classifiers.Hybrid_3CNN_k8(name="3CNN_k8")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k8,"3CNN_k8")
