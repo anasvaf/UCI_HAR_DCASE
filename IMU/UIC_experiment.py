@@ -4,12 +4,10 @@ import UCI_HAR_Dataset as UCI_HAR
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
-#change this to point UCI_HAR data path
-ucihar_data_path = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
 
-def train_CNN_feature_extractor():
-	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=ucihar_data_path, split="train") # train
-	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=ucihar_data_path, split="test") # test
+def train_CNN_feature_extractor(datapath):
+	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
+	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
@@ -38,10 +36,12 @@ def train_CNN_feature_extractor():
 	  
 
 def mainMenu():
+	#change this to point UCI_HAR data path
+	ucihar_data_path = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
 	print("1. Train CNN feature extractor\n2. Selection 2\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
-		train_CNN_feature_extractor()
+		train_CNN_feature_extractor(ucihar_datapath)
 		return False
 	else:
 		return True
