@@ -86,7 +86,7 @@ def plot_features_PCA(datapath):
 	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand")
 	ax0.scatter(wal_df['x'].values,wal_df['y'].values,c="tab:green",label="Walk")
 	ax0.scatter(wup_df['x'].values,wup_df['y'].values,c="tab:purple",label="W. Upstairs")
-	ax0.scatter(wdo_df['x'].values,wdo_df['y'].values,c="tab:yellow",label="W. Downtairs")
+	ax0.scatter(wdo_df['x'].values,wdo_df['y'].values,c="tab:cyan",label="W. Downtairs")
 	#1st-3rd PCA components
 	ax1.scatter(sit_df['x'].values,sit_df['z'].values,c="tab:blue",label="Sit")
 	ax1.scatter(sta_df['x'].values,sta_df['z'].values,c="tab:orange",label="Stand")
