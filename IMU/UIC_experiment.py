@@ -25,19 +25,14 @@ def train_CNN_feature_extractor(datapath):
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
 	labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
-	print(np.unique( np.array(lab_tr)  ))
-	print(np.unique( np.array(labels_test)  ))
-
 	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-
 	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
 	clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
 	clf.loadBestWeights()
 	predictions = clf.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	
 	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
 	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
 	  
@@ -63,10 +58,10 @@ def plot_features_PCA(datapath):
 	y = [x-1 for x in y]
 	pca = PCA(n_components=3, svd_solver='arpack')
 	X = train_X_df.values
-	reduced_x = pca.fit_transform(X)
+	reduced_X = pca.fit_transform(X)
 	print(reduced_X.head())
 	print(train_y_df.head())
-	reduced_df = pd.DataFrame(reduced_x,columns=['x','y','z'])
+	reduced_df = pd.DataFrame(reduced_X,columns=['x','y','z'])
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
 	
 
