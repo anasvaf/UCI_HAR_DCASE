@@ -5,7 +5,7 @@ import UCI_HAR_Dataset as UCI_HAR
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
 #change this to point UCI_HAR data path
-ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
+ucihar_data_path = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
 
 def train_CNN_feature_extractor():
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=ucihar_data_path, split="train") # train
