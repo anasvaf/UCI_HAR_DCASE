@@ -15,7 +15,7 @@ def train_CNN_feature_extractor(datapath):
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
 
-	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, stratify = labels_train, random_state = 123)
+	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
 
