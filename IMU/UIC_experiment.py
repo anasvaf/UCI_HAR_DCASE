@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from keras.utils import to_categorical
+import matplotlib.pyplot as plt
+#local imports
 import Classifiers
 import UCI_HAR_Dataset as UCI_HAR
 
@@ -65,9 +67,37 @@ def plot_features_PCA(datapath):
 	all_df = pd.merge(reduced_df, train_y_df, on=reduced_df.index, how='inner')
 	print(all_df.head())
 	print(all_df.tail())
+	wal_df = all_df.loc[all_df['label'] == 0]
+	wup_df = all_df.loc[all_df['label'] == 1]
+	wdo_df = all_df.loc[all_df['label'] == 2]
+	sit_df = all_df.loc[all_df['label'] == 3]
+	sta_df = all_df.loc[all_df['label'] == 4]
+	lay_df = all_df.loc[all_df['label'] == 5]
+	wal_df = wal_df[['x','y','z']]
+	wup_df = wup_df[['x','y','z']]
+	wdo_df = wdo_df[['x','y','z']]
+	sit_df = sit_df[['x','y','z']]
+	sta_df = sta_df[['x','y','z']]
+	lay_df = lay_df[['x','y','z']]
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
+	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(14,7))
+	ax0.scatter(sit_df['x'].values,sit_df['y'].values,c="tab:blue",label="Sit")
+	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand")
+	ax0.scatter(wal_df['x'].values,wal_df['y'].values,c="tab:green",label="Walk")
+	#1st-3rd PCA components
+	ax1.scatter(sit_df['x'].values,sit_df['z'].values,c="tab:blue",label="Sit")
+	ax1.scatter(sta_df['x'].values,sta_df['z'].values,c="tab:orange",label="Stand")
+	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk")
+	plt.title('PCA Noisy')
+	#plt.legend(loc=1)
+	ax0.set_title('PCA components 1 and 2')
+	ax1.set_title('PCA components 1and 3')
+	ax1.legend()
+	ax0.legend()
+	ax2.legend()
+	fig.tight_layout()
+	fig.savefig("PCA_CNN3_sit_sta_wal.png",dpi=300)
 	
-
 #Simple CLI interface
 def mainMenu():
 	#change this to point UCI_HAR data path
