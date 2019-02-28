@@ -29,6 +29,7 @@ def train_CNN_feature_extractor(datapath):
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
 
 	clf = Classifiers.Hybrid_CNN_MLP(patience=1,name="CNN_LSTM_original_")
+	clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
 	clf.loadBestWeights()
 	predictions = clf.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
