@@ -37,8 +37,13 @@ def train_CNN_feature_extractor():
 	  
 
 def mainMenu():
-	print("1. Train CNN feature extractor 1 \n2. Selection 2\n\n Press any other key to exit")
+	print("1. Train CNN feature extractor\n2. Selection 2\n\n Press any other key to exit")
 	sel = input("")
+	if sel == "1":
+		train_CNN_feature_extractor()
+		return False
+	else:
+		return True
 
 
 
