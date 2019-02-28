@@ -56,8 +56,6 @@ def plot_features_PCA(datapath):
 	cnn = "CNN3"
 	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
-	y = train_y_df['label'].values
-	y = [x-1 for x in y]
 	pca = PCA(n_components=3, svd_solver='arpack')
 	X = train_X_df.values
 	reduced_X = pca.fit_transform(X)
@@ -67,12 +65,12 @@ def plot_features_PCA(datapath):
 	all_df = pd.merge(reduced_df, train_y_df, on=reduced_df.index, how='inner')
 	print(all_df.head())
 	print(all_df.tail())
-	wal_df = all_df.loc[all_df['label'] == 0]
-	wup_df = all_df.loc[all_df['label'] == 1]
-	wdo_df = all_df.loc[all_df['label'] == 2]
-	sit_df = all_df.loc[all_df['label'] == 3]
-	sta_df = all_df.loc[all_df['label'] == 4]
-	lay_df = all_df.loc[all_df['label'] == 5]
+	wal_df = all_df.loc[all_df['label'] == 1]
+	wup_df = all_df.loc[all_df['label'] == 2]
+	wdo_df = all_df.loc[all_df['label'] == 3]
+	sit_df = all_df.loc[all_df['label'] == 4]
+	sta_df = all_df.loc[all_df['label'] == 5]
+	lay_df = all_df.loc[all_df['label'] == 6]
 	wal_df = wal_df[['x','y','z']]
 	wup_df = wup_df[['x','y','z']]
 	wdo_df = wdo_df[['x','y','z']]
@@ -80,7 +78,7 @@ def plot_features_PCA(datapath):
 	sta_df = sta_df[['x','y','z']]
 	lay_df = lay_df[['x','y','z']]
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
-	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(6,3))
+	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(8,4))
 	ax0.scatter(sit_df['x'].values,sit_df['y'].values,c="tab:blue",label="Sit")
 	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand")
 	ax0.scatter(wup_df['x'].values,wup_df['y'].values,c="tab:purple",label="W. Upstairs")
@@ -90,8 +88,10 @@ def plot_features_PCA(datapath):
 	#1st-3rd PCA components
 	ax1.scatter(sit_df['x'].values,sit_df['z'].values,c="tab:blue",label="Sit")
 	ax1.scatter(sta_df['x'].values,sta_df['z'].values,c="tab:orange",label="Stand")
-	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk")
-	plt.title('PCA Noisy')
+	ax1.scatter(wup_df['x'].values,wup_df['z'].values,c="tab:purple",label="W. Upstairs")
+	ax1.scatter(wdo_df['x'].values,wdo_df['z'].values,c="tab:cyan",label="W. Downtairs")
+	ax1.scatter(lay_df['x'].values,lay_df['z'].values,c="tab:red",label="Lay")
+	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk")	plt.title('PCA Noisy')
 	#plt.legend(loc=1)
 	ax0.set_title('PCA components 1 and 2')
 	ax1.set_title('PCA components 1and 3')
