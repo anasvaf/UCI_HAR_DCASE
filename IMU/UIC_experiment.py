@@ -72,13 +72,16 @@ def plot_features_PCA():
 def mainMenu():
 	#change this to point UCI_HAR data path
 	ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
-	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n\n Press any other key to exit")
+	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot features PCA\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
 		train_CNN_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
 		export_CNN_features(ucihar_datapath)
+		return False
+	if sel == "3":
+		plot_features_PCA()
 		return False
 	else:
 		return True
