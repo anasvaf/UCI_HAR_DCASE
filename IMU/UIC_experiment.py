@@ -62,7 +62,7 @@ def plot_features_PCA(datapath):
 	reduced_df = pd.DataFrame(reduced_X,columns=['x','y','z'])
 	print(reduced_df.head())
 	print(train_y_df.head())
-	all_df = pd.merge(reduced_df, train_y_df, on='index', how='inner')
+	all_df = pd.merge(reduced_df, train_y_df, on=reduced_df.index, how='inner')
 	print(all_df.head())
 	print(all_df.tail())
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
