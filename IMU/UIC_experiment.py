@@ -28,14 +28,14 @@ def train_CNN_feature_extractor(datapath):
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
 
-	clf = Classifiers.Hybrid_CNN_MLP(patience=1,name="CNN_LSTM_original_")
+	clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_LSTM_original_")
 	clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
 	clf.loadBestWeights()
 	predictions = clf.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	
-	clf.printClassificationReport(true=y_test,pred=predictions_inv,classes=classes,filename="CNN_LSTM_original_report.txt")
-	clf.plotConfusionMatrix(true=y_test,pred=predictions_inv,classes=classes,showGraph=True,saveFig=True,filename="CNN_LSTM_original_CM.png")
+	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_LSTM_original_report.txt")
+	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=True,saveFig=True,filename="CNN_LSTM_original_CM.png")
 	  
 	  
 
