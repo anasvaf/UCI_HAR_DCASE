@@ -92,9 +92,8 @@ def plot_features_PCA(datapath):
 	#plt.legend(loc=1)
 	ax0.set_title('PCA components 1 and 2')
 	ax1.set_title('PCA components 1and 3')
-	ax1.legend()
 	ax0.legend()
-	ax2.legend()
+	ax1.legend()
 	fig.tight_layout()
 	fig.savefig("PCA_CNN3_sit_sta_wal.png",dpi=300)
 	
