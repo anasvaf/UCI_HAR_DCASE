@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 #local imports
 import Classifiers
 import UCI_HAR_Dataset as UCI_HAR
+from os.path import expanduser
+#get actual home path for current user
+home = expanduser("~")
 
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
@@ -104,7 +107,7 @@ def plot_features_PCA(datapath):
 #Simple CLI interface
 def mainMenu():
 	#change this to point UCI_HAR data path
-	ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
+	ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
 	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot features PCA\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
