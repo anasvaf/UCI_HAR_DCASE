@@ -53,6 +53,20 @@ def export_CNN_features(datapath):
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv('auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
 	
+def plot_features_PCA():
+	cnn = "CNN3"
+	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
+	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
+	y = train_y_df['label'].values
+	y = [x-1 for x in y]
+	pca = PCA(n_components=3, svd_solver='arpack')
+	X = train_X_df.values
+	reduced_x = pca.fit_transform(X)
+	print(reduced_X.head())
+	print(train_y_df.head())
+	reduced_df = pd.DataFrame(reduced_x,columns=['x','y','z'])
+	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
+	
 
 #Simple CLI interface
 def mainMenu():
