@@ -40,7 +40,23 @@ def train_CNN_feature_extractor(datapath):
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
 	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
-	  
+	#do CNN layers exploration
+	#1 CNN layer
+	clf_1CNN_k2 = Classifiers.Hybrid_1CNN_k2(patience=25,name="1CNN_k2")
+	clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#2 layers
+	clf_2CNN_k2 = Classifiers.Hybrid_2CNN_k2(patience=25,name="2CNN_k2")
+	clf_2CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#3 layers
+	clf_3CNN_k2 = Classifiers.Hybrid_3CNN_k2(patience=25,name="3CNN_k2")
+	clf_3CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#4 layers
+	clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2(patience=25,name="4CNN_k2")
+	clf_4CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	##kernel size exploration
+	
+
+	
 def export_CNN_features(datapath):
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
 	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
