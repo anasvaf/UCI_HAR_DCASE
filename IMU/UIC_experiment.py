@@ -40,7 +40,7 @@ def train_CNN_feature_extractor(datapath):
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
 	clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
-	#do CNN layers exploration
+	#do CNN layers exploration - Layers: 1 - 2 - 3 - 4
 	#1 CNN layer
 	clf_1CNN_k2 = Classifiers.Hybrid_1CNN_k2(patience=25,name="1CNN_k2")
 	clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
@@ -53,8 +53,20 @@ def train_CNN_feature_extractor(datapath):
 	#4 layers
 	clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2(patience=25,name="4CNN_k2")
 	clf_4CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	##kernel size exploration
-	
+	##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
+	#kernel 8
+	clf_3CNN_k8 = Classifiers.Hybrid_3CNN_k8(patience=25,name="3CNN_k8")
+	clf_3CNN_k8.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#kernel 16
+	clf_3CNN_k16 = Classifiers.Hybrid_3CNN_k16(patience=25,name="3CNN_k16")
+	clf_3CNN_k16.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#kernel 32
+	clf_3CNN_k32 = Classifiers.Hybrid_3CNN_k32(patience=25,name="3CNN_k32")
+	clf_3CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+	#kernel 64
+	clf_3CNN_k64 = Classifiers.Hybrid_3CNN_k64(patience=25,name="3CNN_k64")
+	clf_3CNN_k64.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
+
 
 	
 def export_CNN_features(datapath):
