@@ -37,7 +37,7 @@ def train_CNN_feature_extractor(datapath):
 
 def mainMenu():
 	#change this to point UCI_HAR data path
-	ucihar_data_path = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
+	ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
 	print("1. Train CNN feature extractor\n2. Selection 2\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
