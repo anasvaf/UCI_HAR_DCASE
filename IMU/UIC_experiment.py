@@ -49,12 +49,12 @@ def export_CNN_features(datapath):
 	auto_feats_names = []
 	for i in range(768):
 		auto_feats_names.append("f"+str(i))
-	auto_feats_df = pd.DataFrame(train_automatic_features,columns=auto_feats_names)
+	auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
 	print(auto_feats_df.head())
-	auto_feats_df.to_csv(datapath+'train/auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
+	auto_feats_df.to_csv('auto_train_features_CNN3.csv.gz',compression='gzip',index=False,header=None)
 	
 
-
+#Simple CLI interface
 def mainMenu():
 	#change this to point UCI_HAR data path
 	ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
@@ -69,10 +69,7 @@ def mainMenu():
 	else:
 		return True
 
-
-
-
-
+#main CLI application loop
 while True:
 	if mainMenu():
 		break
