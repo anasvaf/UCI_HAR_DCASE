@@ -4,11 +4,12 @@ import UCI_HAR_Dataset as UCI_HAR
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
-
+#change this to point UCI_HAR data path
+ucihar_datapath = "/home/fedecrux/python/data/UCI_HAR_Dataset/"
 
 def train_CNN_feature_extractor():
-	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
-	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
+	X_train, labels_train, list_ch_train = UCI_HAR.read_data(ucihar_data_path=datapath, split="train") # train
+	X_test, labels_test, list_ch_test = UCI_HAR.read_data(ucihar_data_path=datapath, split="test") # test
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
