@@ -14,6 +14,14 @@ home = expanduser("~")
 
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
+#Load HC features info from UCI-HAR dataset
+features_desc_df = pd.read_csv(datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
+#print(features_desc_df.head())
+feat_names = features_desc_df['feat_name'].values.tolist()
+print(feat_names[0]," ",feat_names[1])
+print("N. of features: ",len(feat_names))
+
+
 #auto features names f1, f2 ..
 auto_feats_names = []
 for i in range(768):
@@ -108,7 +116,7 @@ def train_CNN_feature_extractor(datapath):
 	clf_3CNN_k64.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k64_CM.png")
 
 
-	
+
 def export_CNN_features(datapath,clf,clf_name):
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
 	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
@@ -122,7 +130,56 @@ def export_CNN_features(datapath,clf,clf_name):
 	auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv('auto_train_features_'+clf_name+'.csv.gz',compression='gzip',index=False,header=None)
-	
+
+def plot_hc_features_PCA(datapath):
+	train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
+	train_y = train_y_df['label'].values
+	pca = PCA(n_components=3, svd_solver='arpack')
+	X = train_X_df.values
+	reduced_X = pca.fit_transform(X)
+	reduced_df = pd.DataFrame(reduced_X,columns=['x','y','z'])
+	print(reduced_df.head())
+	print(train_y_df.head())
+	all_df = pd.merge(reduced_df, train_y_df, on=reduced_df.index, how='inner')
+	print(all_df.head())
+	print(all_df.tail())
+	wal_df = all_df.loc[all_df['label'] == 1]
+	wup_df = all_df.loc[all_df['label'] == 2]
+	wdo_df = all_df.loc[all_df['label'] == 3]
+	sit_df = all_df.loc[all_df['label'] == 4]
+	sta_df = all_df.loc[all_df['label'] == 5]
+	lay_df = all_df.loc[all_df['label'] == 6]
+	wal_df = wal_df[['x','y','z']]
+	wup_df = wup_df[['x','y','z']]
+	wdo_df = wdo_df[['x','y','z']]
+	sit_df = sit_df[['x','y','z']]
+	sta_df = sta_df[['x','y','z']]
+	lay_df = lay_df[['x','y','z']]
+	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
+	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(8,4))
+	ax0.scatter(sit_df['x'].values,sit_df['y'].values,c="tab:blue",label="Sit",s=4)
+	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand",s=4)
+	ax0.scatter(wup_df['x'].values,wup_df['y'].values,c="tab:purple",label="W. Upstairs",s=4)
+	ax0.scatter(wdo_df['x'].values,wdo_df['y'].values,c="tab:cyan",label="W. Downtairs",s=4)
+	#ax0.scatter(lay_df['x'].values,lay_df['y'].values,c="tab:red",label="Lay")
+	ax0.scatter(wal_df['x'].values,wal_df['y'].values,c="tab:green",label="Walk",s=4)
+	#1st-3rd PCA components
+	ax1.scatter(sit_df['x'].values,sit_df['z'].values,c="tab:blue",label="Sit",s=4)
+	ax1.scatter(sta_df['x'].values,sta_df['z'].values,c="tab:orange",label="Stand",s=4)
+	ax1.scatter(wup_df['x'].values,wup_df['z'].values,c="tab:purple",label="W. Upstairs",s=4)
+	ax1.scatter(wdo_df['x'].values,wdo_df['z'].values,c="tab:cyan",label="W. Downtairs",s=4)
+	#ax1.scatter(lay_df['x'].values,lay_df['z'].values,c="tab:red",label="Lay")
+	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk",s=4)
+	plt.title('PCA Human Crafted Features')
+	#plt.legend(loc=1)
+	ax0.set_title('PCA components 1 and 2')
+	ax1.set_title('PCA components 1and 3')
+	ax0.legend()
+	ax1.legend()
+	fig.tight_layout()
+	fig.savefig("PCA_HC_Features.png",dpi=300)
+
 def plot_features_PCA(datapath):
 	cnn = "CNN3"
 	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
@@ -162,7 +219,7 @@ def plot_features_PCA(datapath):
 	ax1.scatter(wup_df['x'].values,wup_df['z'].values,c="tab:purple",label="W. Upstairs",s=4)
 	ax1.scatter(wdo_df['x'].values,wdo_df['z'].values,c="tab:cyan",label="W. Downtairs",s=4)
 	#ax1.scatter(lay_df['x'].values,lay_df['z'].values,c="tab:red",label="Lay")
-	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk",s=4)	
+	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk",s=4)
 	plt.title('PCA CNN Auto Features')
 	#plt.legend(loc=1)
 	ax0.set_title('PCA components 1 and 2')
@@ -171,12 +228,12 @@ def plot_features_PCA(datapath):
 	ax1.legend()
 	fig.tight_layout()
 	fig.savefig("PCA_CNN3_sit_sta_wal.png",dpi=300)
-	
+
 #Simple CLI interface
 def mainMenu():
 	#change this to point UCI_HAR data path
 	ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
-	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot features PCA\n\n Press any other key to exit")
+	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
 		train_CNN_feature_extractor(ucihar_datapath)
@@ -202,6 +259,9 @@ def mainMenu():
 		return False
 	if sel == "3":
 		plot_features_PCA(ucihar_datapath)
+		return False
+	if sel == "4":
+		plot_hc_features_PCA(ucihar_datapath)
 		return False
 	else:
 		return True

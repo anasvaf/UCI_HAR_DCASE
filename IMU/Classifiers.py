@@ -11,9 +11,11 @@ from keras.layers import *
 from datetime import datetime
 import keras
 import seaborn as sn
+from os.path import expanduser
+#get actual home path for current user
+home = expanduser("~")
 
-
-basepath = '/home/fedecrux/python/data/UCI_HAR_Dataset/keras_logs/'
+basepath = home + '/python/data/UCI_HAR_Dataset/keras_logs/'
 
 
 ##Base class
@@ -292,7 +294,7 @@ class Hybrid_4CNN_k2(BaseClassifier):
 		self.name2layer = {}
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
-			
+
 class Hybrid_3CNN_k8(BaseClassifier):
 	def __init__(self,patience=25,name="clf",fontSize=16):
 		name = name + "_3CNN_k8_"
@@ -409,4 +411,3 @@ class Hybrid_3CNN_k64(BaseClassifier):
 		self.name2layer = {}
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
-
