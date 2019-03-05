@@ -12,6 +12,9 @@ from os.path import expanduser
 home = expanduser("~")
 
 
+#change this to point UCI_HAR data path
+ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
+
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
 #Load HC features info from UCI-HAR dataset
@@ -231,8 +234,6 @@ def plot_features_PCA(datapath):
 
 #Simple CLI interface
 def mainMenu():
-	#change this to point UCI_HAR data path
-	ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
 	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
