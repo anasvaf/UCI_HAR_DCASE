@@ -18,7 +18,7 @@ ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
 classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
 #Load HC features info from UCI-HAR dataset
-features_desc_df = pd.read_csv(datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
+features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
 #print(features_desc_df.head())
 feat_names = features_desc_df['feat_name'].values.tolist()
 print(feat_names[0]," ",feat_names[1])
