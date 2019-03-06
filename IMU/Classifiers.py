@@ -132,7 +132,7 @@ class BaseClassifier:
 				out_file.write(cr)
 
 	def printAccuracyScore(self, pred, true,filename=""):
-		acc = accuracy.score(np.array(true), np.array(pred))
+		acc = accuracy_score(np.array(true), np.array(pred))
 		print("Accuracy: ",acc)
 		if not filename == "":
 			with open(filename,"w") as out_file:
