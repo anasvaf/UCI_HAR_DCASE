@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, classification_report
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, classification_report, accuracy_score
 from keras.models import Sequential, load_model
 from keras.callbacks import EarlyStopping, ModelCheckpoint, CSVLogger
 from keras import backend as keras_backend
@@ -130,6 +130,13 @@ class BaseClassifier:
 		if not filename == "":
 			with open(filename,"w") as out_file:
 				out_file.write(cr)
+
+	def printAccuracyScore(self, pred, true,filename=""):
+		acc = accuracy.score(np.array(true), np.array(pred))
+		print("Accuracy: ",acc)
+		if not filename == "":
+			with open(filename,"w") as out_file:
+				out_file.write(acc)
 
 	def plotConfusionMatrix(self,pred,true,classes,saveFig=True,showGraph=False,filename="undefined"):
 		cm = confusion_matrix(np.array(true), np.array(pred) )
