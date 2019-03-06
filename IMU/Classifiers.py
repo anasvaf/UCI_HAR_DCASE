@@ -136,7 +136,7 @@ class BaseClassifier:
 		print("Accuracy: ",acc)
 		if not filename == "":
 			with open(filename,"w") as out_file:
-				out_file.write(acc)
+				out_file.write(str(acc))
 
 	def plotConfusionMatrix(self,pred,true,classes,saveFig=True,showGraph=False,filename="undefined"):
 		cm = confusion_matrix(np.array(true), np.array(pred) )
