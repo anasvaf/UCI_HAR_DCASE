@@ -183,8 +183,8 @@ def plot_hc_features_PCA(datapath):
 	fig.tight_layout()
 	fig.savefig("PCA_HC_Features.png",dpi=300)
 
-def plot_features_PCA(datapath):
-	cnn = "CNN3"
+def plot_features_PCA(datapath,name):
+	cnn = name
 	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
 	pca = PCA(n_components=3, svd_solver='arpack')
@@ -230,7 +230,7 @@ def plot_features_PCA(datapath):
 	ax0.legend()
 	ax1.legend()
 	fig.tight_layout()
-	fig.savefig("PCA_CNN3_sit_sta_wal.png",dpi=300)
+	fig.savefig("PCA_Auto_" + name + ".png",dpi=300)
 
 #Simple CLI interface
 def mainMenu():
@@ -259,7 +259,14 @@ def mainMenu():
 		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64")
 		return False
 	if sel == "3":
-		plot_features_PCA(ucihar_datapath)
+		plot_features_PCA(ucihar_datapath,name="1CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="2CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="4CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k8")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k16")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k32")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k64")
 		return False
 	if sel == "4":
 		plot_hc_features_PCA(ucihar_datapath)

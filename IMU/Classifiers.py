@@ -281,7 +281,7 @@ class Hybrid_4CNN_k2(BaseClassifier):
 		self.model.add( Conv1D(48,kernel_size=2,padding='same',activation='relu', name="layer_3") )
 		self.model.add(MaxPooling1D())
 		#4th layer
-		self.model.add( Conv1D(48,kernel_size=2,padding='same',activation='relu', name="layer_4") )
+		self.model.add( Conv1D(96,kernel_size=2,padding='same',activation='relu', name="layer_4") )
 		self.model.add(MaxPooling1D())
 		#(?,480)
 		#UCI (?,768)
