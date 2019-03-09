@@ -37,94 +37,96 @@ def train_CNN_feature_extractor(datapath):
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
-	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
-	lab_tr[:] = [ y -1 for y in lab_tr ]
-	lab_vld[:] = [ y -1 for y in lab_vld ]
-	labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
-	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
-	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
-	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-	#clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
-	#clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	#clf.loadBestWeights()
-	#predictions = clf.predict(X_test,batch_size=1)
-	#predictions_inv = [ [np.argmax(x)] for x in predictions]
-	#clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
-	#clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
-	#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4
-	#1 CNN layer
-	clf_1CNN_k2 = Classifiers.Hybrid_1CNN_k2(patience=25,name="1CNN_k2")
-	clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_1CNN_k2.loadBestWeights()
-	predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_1CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="1CNN_k2_classification_report.txt")
-	clf_1CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="1CNN_k2_CM.png")
-	clf_1CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="1CNN_k2_classification_accuracy.txt")
-	#2 layers
-	clf_2CNN_k2 = Classifiers.Hybrid_2CNN_k2(patience=25,name="2CNN_k2")
-	clf_2CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_2CNN_k2.loadBestWeights()
-	predictions = clf_2CNN_k2.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_2CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="2CNN_k2_classification_report.txt")
-	clf_2CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="2CNN_k2_CM.png")
-	clf_2CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="2CNN_k2_classification_accuracy.txt")
-	#3 layers
-	clf_3CNN_k2 = Classifiers.Hybrid_3CNN_k2(patience=25,name="3CNN_k2")
-	clf_3CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_3CNN_k2.loadBestWeights()
-	predictions = clf_3CNN_k2.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_3CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="3CNN_k2_classification_report.txt")
-	clf_3CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k2_CM.png")
-	clf_3CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="3CNN_k2_classification_accuracy.txt")
-	#4 layers
-	clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2(patience=25,name="4CNN_k2")
-	clf_4CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_4CNN_k2.loadBestWeights()
-	predictions = clf_4CNN_k2.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_4CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="4CNN_k2_classification_report.txt")
-	clf_4CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="4CNN_k2_CM.png")
-	clf_4CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="4CNN_k2_classification_accuracy.txt")
-	##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
-	#kernel 8
-	clf_3CNN_k8 = Classifiers.Hybrid_3CNN_k8(patience=25,name="3CNN_k8")
-	clf_3CNN_k8.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_3CNN_k8.loadBestWeights()
-	predictions = clf_3CNN_k8.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_3CNN_k8.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="3CNN_k8_classification_report.txt")
-	clf_3CNN_k8.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k8_CM.png")
-	clf_3CNN_k8.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="3CNN_k8_classification_accuracy.txt")
-	#kernel 16
-	clf_3CNN_k16 = Classifiers.Hybrid_3CNN_k16(patience=25,name="3CNN_k16")
-	clf_3CNN_k16.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_3CNN_k16.loadBestWeights()
-	predictions = clf_3CNN_k16.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_3CNN_k16.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="3CNN_k16_classification_report.txt")
-	clf_3CNN_k16.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k16_CM.png")
-	clf_3CNN_k16.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="3CNN_k16_classification_accuracy.txt")
-	#kernel 32
-	clf_3CNN_k32 = Classifiers.Hybrid_3CNN_k32(patience=25,name="3CNN_k32")
-	clf_3CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_3CNN_k32.loadBestWeights()
-	predictions = clf_3CNN_k32.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_3CNN_k32.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="3CNN_k32_classification_report.txt")
-	clf_3CNN_k32.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k32_CM.png")
-	clf_3CNN_k32.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="3CNN_k32_classification_accuracy.txt")
-	#kernel 64
-	clf_3CNN_k64 = Classifiers.Hybrid_3CNN_k64(patience=25,name="3CNN_k64")
-	clf_3CNN_k64.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512)
-	clf_3CNN_k64.loadBestWeights()
-	predictions = clf_3CNN_k64.predict(X_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_3CNN_k64.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="3CNN_k64_classification_report.txt")
-	clf_3CNN_k64.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="3CNN_k64_CM.png")
-	clf_3CNN_k64.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="3CNN_k64_classification_accuracy.txt")
+	### Init 10 fold validation
+	for k in range(10):
+		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
+		lab_tr[:] = [ y -1 for y in lab_tr ]
+		lab_vld[:] = [ y -1 for y in lab_vld ]
+		labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
+		y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
+		y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
+		y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
+		#clf = Classifiers.Hybrid_CNN_MLP(patience=200,name="CNN_3_Layers")
+		#clf.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		#clf.loadBestWeights()
+		#predictions = clf.predict(X_test,batch_size=1)
+		#predictions_inv = [ [np.argmax(x)] for x in predictions]
+		#clf.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="CNN_classification_report.txt")
+		#clf.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="CNN_CM.png")
+		#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4
+		#1 CNN layer
+		clf_1CNN_k2 = Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
+		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_1CNN_k2.loadBestWeights()
+		predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_1CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_1CNN_k2_classification_report.txt")
+		clf_1CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_1CNN_k2_CM.png")
+		clf_1CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_1CNN_k2_classification_accuracy.txt")
+		#2 layers
+		clf_2CNN_k2 = Classifiers.Hybrid_2CNN_k2(patience=200,name="2CNN_k2")
+		clf_2CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_2CNN_k2.loadBestWeights()
+		predictions = clf_2CNN_k2.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_2CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_2CNN_k2_classification_report.txt")
+		clf_2CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_2CNN_k2_CM.png")
+		clf_2CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_2CNN_k2_classification_accuracy.txt")
+		#3 layers
+		clf_3CNN_k2 = Classifiers.Hybrid_3CNN_k2(patience=200,name="3CNN_k2")
+		clf_3CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k2.loadBestWeights()
+		predictions = clf_3CNN_k2.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_3CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_3CNN_k2_classification_report.txt")
+		clf_3CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k2_CM.png")
+		clf_3CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k2_classification_accuracy.txt")
+		#4 layers
+		clf_4CNN_k2 = Classifiers.Hybrid_4CNN_k2(patience=200,name="4CNN_k2")
+		clf_4CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_4CNN_k2.loadBestWeights()
+		predictions = clf_4CNN_k2.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_4CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_4CNN_k2_classification_report.txt")
+		clf_4CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_4CNN_k2_CM.png")
+		clf_4CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_4CNN_k2_classification_accuracy.txt")
+		##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
+		#kernel 8
+		clf_3CNN_k8 = Classifiers.Hybrid_3CNN_k8(patience=200,name="3CNN_k8")
+		clf_3CNN_k8.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k8.loadBestWeights()
+		predictions = clf_3CNN_k8.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_3CNN_k8.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_3CNN_k8_classification_report.txt")
+		clf_3CNN_k8.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k8_CM.png")
+		clf_3CNN_k8.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k8_classification_accuracy.txt")
+		#kernel 16
+		clf_3CNN_k16 = Classifiers.Hybrid_3CNN_k16(patience=200,name="3CNN_k16")
+		clf_3CNN_k16.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k16.loadBestWeights()
+		predictions = clf_3CNN_k16.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_3CNN_k16.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_3CNN_k16_classification_report.txt")
+		clf_3CNN_k16.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k16_CM.png")
+		clf_3CNN_k16.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k16_classification_accuracy.txt")
+		#kernel 32
+		clf_3CNN_k32 = Classifiers.Hybrid_3CNN_k32(patience=200,name="3CNN_k32")
+		clf_3CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k32.loadBestWeights()
+		predictions = clf_3CNN_k32.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_3CNN_k32.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_3CNN_k32_classification_report.txt")
+		clf_3CNN_k32.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k32_CM.png")
+		clf_3CNN_k32.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k32_classification_accuracy.txt")
+		#kernel 64
+		clf_3CNN_k64 = Classifiers.Hybrid_3CNN_k64(patience=200,name="3CNN_k64")
+		clf_3CNN_k64.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k64.loadBestWeights()
+		predictions = clf_3CNN_k64.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		clf_3CNN_k64.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_3CNN_k64_classification_report.txt")
+		clf_3CNN_k64.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k64_CM.png")
+		clf_3CNN_k64.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k64_classification_accuracy.txt")
 
 
 def export_CNN_features(datapath,clf,clf_name):
@@ -133,7 +135,7 @@ def export_CNN_features(datapath,clf,clf_name):
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
-	#clf = Classifiers.Hybrid_CNN_MLP(patience=25,name="CNN_3_Layers")
+	#clf = Classifiers.Hybrid_CNN_MLP(patience=200,name="CNN_3_Layers")
 	clf.loadBestWeights()
 	auto_features = clf.get_layer_output(X_train,"automatic_features")
 	print("Features shape: ",auto_features.shape)
@@ -216,7 +218,7 @@ def plot_features_PCA(datapath,name):
 	sta_df = sta_df[['x','y','z']]
 	lay_df = lay_df[['x','y','z']]
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
-	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(8,4))
+	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(8,5))
 	ax0.scatter(sit_df['x'].values,sit_df['y'].values,c="tab:blue",label="Sit",s=4)
 	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand",s=4)
 	ax0.scatter(wup_df['x'].values,wup_df['y'].values,c="tab:purple",label="W. Upstairs",s=4)
