@@ -23,7 +23,7 @@ features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine=
 feat_names = features_desc_df['feat_name'].values.tolist()
 exp_feat_names = []
 for name in feat_names:
-	if "gyro" in name:
+	if "Gyro" in name:
 		print("skip")
 	else:
 		exp_feat_names.append(name)
