@@ -21,8 +21,14 @@ classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING",
 features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
 #print(features_desc_df.head())
 feat_names = features_desc_df['feat_name'].values.tolist()
+exp_feat_names = []
+for name in feat_names:
+	if "gyro" in name:
+		print("skip")
+	else:
+		exp_feat_names.append(name)
 print(feat_names[0]," ",feat_names[1])
-print("N. of features: ",len(feat_names))
+print("N. of features: ",len(exp_feat_names)," / ",len(feat_names))
 
 
 #auto features names f1, f2 ..
