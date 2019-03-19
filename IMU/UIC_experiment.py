@@ -23,10 +23,9 @@ features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine=
 feat_names = features_desc_df['feat_name'].values.tolist()
 exp_feat_names = []
 for name in feat_names:
-	if "Gyro" in name:
-		print("skip")
-	else:
+	if  not "Gyro" in name:
 		exp_feat_names.append(name)
+		
 print(feat_names[0]," ",feat_names[1])
 print("N. of features: ",len(exp_feat_names)," / ",len(feat_names))
 

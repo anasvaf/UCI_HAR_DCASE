@@ -162,7 +162,7 @@ class UCI_NN_HC(BaseClassifier):
 		self.name = name + "_HUMAN_CRAFTED"
 		super().__init__(name,patience,fontSize)
 		self.model = Sequential()
-		self.model.add( Dense(64,input_dim=561,activation='relu', name="layer_1") )
+		self.model.add( Dense(64,input_dim=348,activation='relu', name="layer_1") )
 		self.model.add( Dense(6,activation='linear',  name="output_layer"))
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
