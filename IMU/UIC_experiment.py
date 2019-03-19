@@ -35,9 +35,12 @@ def train_NN_HC(datapath):
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
 	test_X_df = pd.read_csv(datapath+"test/X_test.txt",names=feat_names,header=None,sep="\s+",engine='python')
 	test_y_df = pd.read_csv(datapath+"test/y_test.txt",names=['label'],header=None)
+	labels_train = train_y_df['label'].values
+	labels_test = test_y_df['label'].values
 	#UCI_NN_HC
 	X_train = train_X_df.values
 	X_test = test_X_df.values
+	labels_train = train_y_df.values
 	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
