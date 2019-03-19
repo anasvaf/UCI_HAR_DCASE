@@ -25,7 +25,7 @@ exp_feat_names = []
 for name in feat_names:
 	if  not "Gyro" in name:
 		exp_feat_names.append(name)
-		
+
 print(feat_names[0]," ",feat_names[1])
 print("N. of features: ",len(exp_feat_names)," / ",len(feat_names))
 
@@ -36,7 +36,8 @@ for i in range(768):
 	auto_feats_names.append("f"+str(i))
 
 def train_NN_HC(datapath):
-	train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	train_X_df = all_train_X_df[exp_feat_names]
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
 	test_X_df = pd.read_csv(datapath+"test/X_test.txt",names=feat_names,header=None,sep="\s+",engine='python')
 	test_y_df = pd.read_csv(datapath+"test/y_test.txt",names=['label'],header=None)
