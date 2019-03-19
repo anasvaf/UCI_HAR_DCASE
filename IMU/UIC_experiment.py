@@ -39,7 +39,8 @@ def train_NN_HC(datapath):
 	all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
 	train_X_df = all_train_X_df[exp_feat_names]
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
-	test_X_df = pd.read_csv(datapath+"test/X_test.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	all_test_X_df = pd.read_csv(datapath+"test/X_test.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	test_X_df = all_test_X_df[exp_feat_names]
 	test_y_df = pd.read_csv(datapath+"test/y_test.txt",names=['label'],header=None)
 	labels_train = train_y_df['label'].values
 	labels_test = test_y_df['label'].values
