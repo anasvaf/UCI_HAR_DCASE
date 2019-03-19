@@ -40,7 +40,7 @@ def train_NN_HC(datapath):
 	#UCI_NN_HC
 	X_train = train_X_df.values
 	X_test = test_X_df.values
-	labels_train = train_y_df.values
+	#labels_train = train_y_df.values
 	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
