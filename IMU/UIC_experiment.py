@@ -81,7 +81,7 @@ def train_CNN_feature_extractor(datapath):
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
 	#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4 and kernel_size = 2
 	#1 CNN layer
-	clf_1CNN_k2 = Classifiers.ACC_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
+	'''clf_1CNN_k2 = Classifiers.ACC_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
 	clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_1CNN_k2.loadBestWeights()
 	predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
@@ -116,7 +116,7 @@ def train_CNN_feature_extractor(datapath):
 	clf_4CNN_k2.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="R_"+str(k)+"_4CNN_k2_classification_report.txt")
 	clf_4CNN_k2.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_4CNN_k2_CM.png")
 	clf_4CNN_k2.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_4CNN_k2_classification_accuracy.txt")
-	##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
+	'''##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
 	#kernel 8
 	clf_3CNN_k8 = Classifiers.ACC_CNN(patience=200,layers=3,kern_size=8,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k8(patience=200,name="3CNN_k8")
 	clf_3CNN_k8.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
