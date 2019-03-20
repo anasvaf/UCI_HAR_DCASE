@@ -157,9 +157,9 @@ class BaseClassifier:
 	def reset_states(self):
 		self.model.reset_states()
 
-class UCI_NN_HC(BaseClassifier):
+class UCI_NN_ACC_HC(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
-		self.name = name + "_HUMAN_CRAFTED"
+		self.name = name + "_HUMAN_CRAFTED_ACC"
 		super().__init__(name,patience,fontSize)
 		self.model = Sequential()
 		self.model.add( Dense(64,input_dim=348,activation='relu', name="layer_1") )
@@ -167,17 +167,17 @@ class UCI_NN_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
-'''class UCI_NN_MLP(BaseClassifier):
+class UCI_NN_IMU_HC(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
-		self.name = name
+		self.name = name + "_HUMAN_CRAFTED_IMU"
 		super().__init__(name,patience,fontSize)
 		self.model = Sequential()
-		self.model.add( Dense(1024,input_dim=561,activation='relu', name="layer_1") )
-		self.model.add( Dense(1024,activation='relu', name="layer_2") )
-		self.model.add( Dense(512,activation='relu', name="layer_3") )
+		self.model.add( Dense(64,input_dim=561,activation='relu', name="layer_1") )
 		self.model.add( Dense(6,activation='linear',  name="output_layer"))
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()'''
+		self.model.summary()
+
+
 
 class ACC_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
@@ -205,256 +205,28 @@ class ACC_CNN(BaseClassifier):
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
 
-
-
-
-''''class Hybrid_CNN_MLP(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_hybrid_CNN_MLP_"
-		super().__init__(name,patience,fontSize)
+class IMU_CNN(BaseClassifier):
+	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
+		self.name = str(layers)+"-CNN_k"+str(kern_size)+"_IMU"
+		super().__init__(self.name,patience,fontSize)
 		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=48,padding='same',activation='relu', name="layer_1") )
+		filters = 12
+		self.model.add( Conv1D(filters,input_shape=(128,9),kernel_size=kern_size,padding='same',activation='relu', name="layer_1") )
 		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=24,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=12,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
+		for i in range(2,layers+1):
+			filters = filters*2
+			if divide_kernel_size:
+				kern_size = int(kern_size / 2)
+			layer_name = "layer_"+str(i)
+			self.model.add( Conv1D(filters,kernel_size=kern_size,padding='same',activation='relu', name=layer_name) )
+			self.model.add(MaxPooling1D())
+		#Automatic features
 		self.model.add(Flatten(name="automatic_features"))
 		#for multilabel DO NOT use softmax use sigmoid
-		#self.model.add( Dense(1024,activation='relu', name="layer_5") )
-		#self.model.add( Dense(512,activation='relu', name="layer_6") )
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
+		self.model.add( Dense(64,activation='relu', name="layer_dense") )
 		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 		self.name2layer = {}
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
-
-class Hybrid_1CNN_k2(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_1CNN_k2_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=2,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_2CNN_k2(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_2CNN_k2_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=2,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=2,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		self.model.add(Flatten(name="automatic_features"))
-		#MLP portion
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_3CNN_k2(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_3CNN_k2_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=2,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=2,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=2,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_4CNN_k2(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_4CNN_k2_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=2,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=2,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=2,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#4th layer
-		self.model.add( Conv1D(96,kernel_size=2,padding='same',activation='relu', name="layer_4") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_3CNN_k8(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_3CNN_k8_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=8,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=4,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=2,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-
-class Hybrid_3CNN_k16(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_3CNN_k16_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=16,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=8,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=4,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_3CNN_k32(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_3CNN_k32_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=32,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=16,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=8,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
-
-class Hybrid_3CNN_k64(BaseClassifier):
-	def __init__(self,patience=25,name="clf",fontSize=16):
-		name = name + "_3CNN_k64_"
-		super().__init__(name,patience,fontSize)
-		self.model = Sequential()
-		#(?,160,3) -> (?,80,6)
-		##UCI (?,128,6) -> (?,64,12)
-		self.model.add( Conv1D(12,input_shape=(128,6),kernel_size=64,padding='same',activation='relu', name="layer_1") )
-		self.model.add(MaxPooling1D())
-		#(?,80,6) -> (?,40,12)
-		##UCI (?,64,12) -> (?,32,24)
-		self.model.add( Conv1D(24,kernel_size=32,padding='same',activation='relu', name="layer_2") )
-		self.model.add(MaxPooling1D())
-		#(?,40,12) -> (?,20,24)
-		##UCI (?,32,24) -> (?,16,48)
-		self.model.add( Conv1D(48,kernel_size=16,padding='same',activation='relu', name="layer_3") )
-		self.model.add(MaxPooling1D())
-		#(?,480)
-		#UCI (?,768)
-		self.model.add(Flatten(name="automatic_features"))
-		#for multilabel DO NOT use softmax use sigmoid
-		self.model.add( Dense(64,activation='relu', name="layer_5") )
-		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
-		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
-		self.name2layer = {}
-		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer'''
