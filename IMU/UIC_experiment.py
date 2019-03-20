@@ -340,7 +340,8 @@ def mainMenu():
 		plot_hc_features_PCA(ucihar_datapath)
 		return False
 	if sel == "5":
-		train_NN_HC(ucihar_datapath)
+		train_NN_IMU_HC(ucihar_datapath)
+		train_NN_ACC_HC(ucihar_datapath)
 		return False
 	else:
 		return True
