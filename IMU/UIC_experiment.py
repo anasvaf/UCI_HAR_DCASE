@@ -249,7 +249,7 @@ def plot_hc_features_PCA(datapath):
 	fig.savefig("PCA_HC_Features.png",dpi=300)
 
 def plot_features_PCA(datapath,name):
-	font = {'family':'sans-serif', 'size':20}
+	font = {'family':'sans-serif', 'size':16}
 	matplotlib.rc('font',**font)
 	cnn = name
 	train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
