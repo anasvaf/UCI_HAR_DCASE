@@ -182,7 +182,7 @@ class UCI_NN_HC(BaseClassifier):
 class ACC_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kernel_size=2,divide_kernel_size=False,fontSize=16):
 		self.name = str(layers)+"-CNN_k"+str(kernel_size)
-		super().__init__(name,patience,fontSize)
+		super().__init__(self.name,patience,fontSize)
 		self.model = Sequential()
 		filters = 12
 		self.model.add( Conv1D(filters,input_shape=(128,6),kernel_size=kernel_size,padding='same',activation='relu', name="layer_1") )
