@@ -167,7 +167,7 @@ class UCI_NN_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
-class UCI_NN_MLP(BaseClassifier):
+'''class UCI_NN_MLP(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
 		self.name = name
 		super().__init__(name,patience,fontSize)
@@ -177,9 +177,38 @@ class UCI_NN_MLP(BaseClassifier):
 		self.model.add( Dense(512,activation='relu', name="layer_3") )
 		self.model.add( Dense(6,activation='linear',  name="output_layer"))
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
-		self.model.summary()
+		self.model.summary()'''
 
-class Hybrid_CNN_MLP(BaseClassifier):
+class UCI_CNN(BaseClassifier):
+	def __init__(self,patience,name,fontSize=16,layers=3,kernel_size=2,divide_kernel_size=False):
+		self.name = str(layers)+"-CNN_k"+str(kernel_size)
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		filters = 12
+		self.model.add( Conv1D(filters,input_shape=(128,6),kernel_size=kernel_size,padding='same',activation='relu', name="layer_1") )
+		self.model.add(MaxPooling1D())
+		for i in range(2,layers+1):
+			filters = filters*2
+			if divide_kernel_size:
+				kernel_size = kernel_size /2
+			layer_name = "layer_"+str(i)
+			self.model.add( Conv1D(filters,kernel_size=kernel_size,padding='same',activation='relu', name=layer_name) )
+			self.model.add(MaxPooling1D())
+		#Automatic features
+		self.model.add(Flatten(name="automatic_features"))
+		#for multilabel DO NOT use softmax use sigmoid
+		self.model.add( Dense(64,activation='relu', name="layer_dense") )
+		self.model.add( Dense(6,activation='softmax',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
+		self.name2layer = {}
+		for layer in self.model.layers:
+			self.name2layer[layer.name] = layer
+
+
+
+
+''''class Hybrid_CNN_MLP(BaseClassifier):
 	def __init__(self,patience=25,name="clf",fontSize=16):
 		name = name + "_hybrid_CNN_MLP_"
 		super().__init__(name,patience,fontSize)
@@ -428,4 +457,4 @@ class Hybrid_3CNN_k64(BaseClassifier):
 		self.model.summary()
 		self.name2layer = {}
 		for layer in self.model.layers:
-			self.name2layer[layer.name] = layer
+			self.name2layer[layer.name] = layer'''
