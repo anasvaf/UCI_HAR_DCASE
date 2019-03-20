@@ -181,7 +181,7 @@ class UCI_NN_HC(BaseClassifier):
 
 class ACC_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
-		self.name = str(layers)+"-CNN_k"+str(kernel_size)
+		self.name = str(layers)+"-CNN_k"+str(kern_size)
 		super().__init__(self.name,patience,fontSize)
 		self.model = Sequential()
 		filters = 12
