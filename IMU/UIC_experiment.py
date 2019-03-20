@@ -273,7 +273,8 @@ def plot_features_PCA(datapath,name):
 	sta_df = sta_df[['x','y','z']]
 	lay_df = lay_df[['x','y','z']]
 	#fig, (ax0,ax1,ax2) = plt.subplots(nrows=3, figsize=(14, 7))
-	fig, (ax0,ax1) = plt.subplots(nrows=2, figsize=(8,5))
+	fig, (ax0,ax1) = plt.subplots(nrows=2)#, figsize=(8,5))
+	plt.title('PCA Auto Features '+cnn)
 	ax0.scatter(sit_df['x'].values,sit_df['y'].values,c="tab:blue",label="Sit",s=4)
 	ax0.scatter(sta_df['x'].values,sta_df['y'].values,c="tab:orange",label="Stand",s=4)
 	ax0.scatter(wup_df['x'].values,wup_df['y'].values,c="tab:purple",label="W. Upstairs",s=4)
@@ -287,7 +288,7 @@ def plot_features_PCA(datapath,name):
 	ax1.scatter(wdo_df['x'].values,wdo_df['z'].values,c="tab:cyan",label="W. Downtairs",s=4)
 	#ax1.scatter(lay_df['x'].values,lay_df['z'].values,c="tab:red",label="Lay")
 	ax1.scatter(wal_df['x'].values,wal_df['z'].values,c="tab:green",label="Walk",s=4)
-	plt.title('PCA CNN Auto Features')
+	#plt.title('PCA CNN Auto Features')
 	#plt.legend(loc=1)
 	#ax0.set_title('PCA components 1 and 2 '+cnn)
 	#ax1.set_title('PCA components 1 and 3 '+cnn)
