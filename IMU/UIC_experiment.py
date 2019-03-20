@@ -58,7 +58,7 @@ def train_NN_ACC_HC(datapath):
 	clf_NN_HC = Classifiers.UCI_NN_ACC_HC(patience=200,name="NN_HC")
 	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_NN_HC.loadBestWeights()
-	predictions = clf_NN_ACC_HC.predict(X_test,batch_size=1)
+	predictions = clf_NN_HC.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="NN_ACC_HC_classification_report.txt")
 	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_ACC_HC_CM.png")
@@ -87,7 +87,7 @@ def train_NN_IMU_HC(datapath):
 	clf_NN_HC = Classifiers.UCI_NN_IMU_HC(patience=200,name="NN_HC")
 	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_NN_HC.loadBestWeights()
-	predictions = clf_NN_ACC_HC.predict(X_test,batch_size=1)
+	predictions = clf_NN_HC.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
 	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="NN_IMU_HC_classification_report.txt")
 	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_IMU_HC_CM.png")
