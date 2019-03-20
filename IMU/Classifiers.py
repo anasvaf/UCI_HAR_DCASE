@@ -150,9 +150,9 @@ class BaseClassifier:
 		if saveFig:
 			fig.tight_layout()
 			if filename == "undefined":
-				fig.savefig(basepath+self.name+"_CM.png",dpi=300)
+				fig.savefig(self.name+"_CM.png",dpi=300)
 			else:
-				fig.savefig(basepath+filename,dpi=300)
+				fig.savefig(filename,dpi=300)
 
 	def reset_states(self):
 		self.model.reset_states()
@@ -180,19 +180,19 @@ class UCI_NN_HC(BaseClassifier):
 		self.model.summary()'''
 
 class ACC_CNN(BaseClassifier):
-	def __init__(self,patience,layers=3,kernel_size=2,divide_kernel_size=False,fontSize=16):
+	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
 		self.name = str(layers)+"-CNN_k"+str(kernel_size)
 		super().__init__(self.name,patience,fontSize)
 		self.model = Sequential()
 		filters = 12
-		self.model.add( Conv1D(filters,input_shape=(128,6),kernel_size=kernel_size,padding='same',activation='relu', name="layer_1") )
+		self.model.add( Conv1D(filters,input_shape=(128,6),kernel_size=kern_size,padding='same',activation='relu', name="layer_1") )
 		self.model.add(MaxPooling1D())
 		for i in range(2,layers+1):
 			filters = filters*2
 			if divide_kernel_size:
-				kernel_size = kernel_size /2
+				kern_size = kern_size / 2
 			layer_name = "layer_"+str(i)
-			self.model.add( Conv1D(filters,kernel_size=kernel_size,padding='same',activation='relu', name=layer_name) )
+			self.model.add( Conv1D(filters,kernel_size=kern_size,padding='same',activation='relu', name=layer_name) )
 			self.model.add(MaxPooling1D())
 		#Automatic features
 		self.model.add(Flatten(name="automatic_features"))
