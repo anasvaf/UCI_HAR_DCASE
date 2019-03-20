@@ -179,8 +179,8 @@ class UCI_NN_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()'''
 
-class UCI_CNN(BaseClassifier):
-	def __init__(self,patience,name,fontSize=16,layers=3,kernel_size=2,divide_kernel_size=False):
+class ACC_CNN(BaseClassifier):
+	def __init__(self,patience,layers=3,kernel_size=2,divide_kernel_size=False,fontSize=16):
 		self.name = str(layers)+"-CNN_k"+str(kernel_size)
 		super().__init__(name,patience,fontSize)
 		self.model = Sequential()
