@@ -190,7 +190,7 @@ class ACC_CNN(BaseClassifier):
 		for i in range(2,layers+1):
 			filters = filters*2
 			if divide_kernel_size:
-				kern_size = kern_size / 2
+				kern_size = int(kern_size / 2)
 			layer_name = "layer_"+str(i)
 			self.model.add( Conv1D(filters,kernel_size=kern_size,padding='same',activation='relu', name=layer_name) )
 			self.model.add(MaxPooling1D())
