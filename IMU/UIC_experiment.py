@@ -248,8 +248,7 @@ def plot_hc_features_PCA(datapath):
 	fig.tight_layout()
 	fig.savefig("PCA_HC_Features.png",dpi=300)
 
-def plot_features_PCA(datapath,name):
-	fontsize = input("Font size: ")
+def plot_features_PCA(datapath,name,fontsize):
 	font = {'family':'sans-serif', 'size':int(fontsize)}
 	matplotlib.rc('font',**font)
 	cnn = name
@@ -332,14 +331,15 @@ def mainMenu():
 		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
 		return False
 	if sel == "3":
-		plot_features_PCA(ucihar_datapath,name="1CNN_k2")
-		plot_features_PCA(ucihar_datapath,name="2CNN_k2")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k2")
-		plot_features_PCA(ucihar_datapath,name="4CNN_k2")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k8")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k16")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k32")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k64")
+		fontsize = input("Font size: ")
+		plot_features_PCA(ucihar_datapath,name="1CNN_k2",fontsize)
+		plot_features_PCA(ucihar_datapath,name="2CNN_k2",fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k2",fontsize)
+		plot_features_PCA(ucihar_datapath,name="4CNN_k2",fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k8",fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k16",fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k32",fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k64",fontsize)
 		return False
 	if sel == "4":
 		plot_hc_features_PCA(ucihar_datapath)
