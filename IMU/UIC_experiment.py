@@ -328,14 +328,14 @@ def mainMenu():
 		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
 		return False
 	if sel == "3":
-		plot_features_PCA(ucihar_datapath,name="1CNN_k2_IMU")
-		plot_features_PCA(ucihar_datapath,name="2CNN_k2_IMU")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k2_IMU")
-		plot_features_PCA(ucihar_datapath,name="4CNN_k2_IMU")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k8_IMU")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k16_IMU")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k32_IMU")
-		plot_features_PCA(ucihar_datapath,name="3CNN_k64_IMU")
+		plot_features_PCA(ucihar_datapath,name="1CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="2CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="4CNN_k2")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k8")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k16")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k32")
+		plot_features_PCA(ucihar_datapath,name="3CNN_k64")
 		return False
 	if sel == "4":
 		plot_hc_features_PCA(ucihar_datapath)
