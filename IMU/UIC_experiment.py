@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from keras.utils import to_categorical
 import matplotlib.pyplot as plt
+import matplotlib
 #local imports
 import Classifiers
 import UCI_HAR_Dataset as UCI_HAR
