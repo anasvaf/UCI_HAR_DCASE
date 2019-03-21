@@ -457,7 +457,7 @@ def mainMenu():
 	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n5. Train Test HC Features\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
-		train_IMU_ACC_feature_extractor(ucihar_datapath)
+		train_CNN_IMU_feature_extractor(ucihar_datapath)
 		train_CNN_ACC_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
