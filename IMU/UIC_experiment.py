@@ -334,8 +334,8 @@ def train_CNN_IMU_feature_extractor(datapath):
 
 
 def export_CNN_features(datapath,clf,clf_name):
-	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
-	X_test, labels_test, list_ch_test = UCI_HAR.read_data(data_path=datapath, split="test") # test
+	X_train, labels_train, list_ch_train = UCI_HAR.read_IMU_data(data_path=datapath, split="train") # train
+	X_test, labels_test, list_ch_test = UCI_HAR.read_IMU_data(data_path=datapath, split="test") # test
 	assert list_ch_train == list_ch_test, "Mistmatch in channels!"
 	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 	print("Data size:", len(X_train), " - ", len(X_train[0]))
