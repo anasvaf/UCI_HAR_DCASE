@@ -115,7 +115,7 @@ def train_CNN_ACC_feature_extractor(datapath):
 		#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4 and kernel_size = 2
 		#1 CNN layer
 		clf_1CNN_k2 = Classifiers.ACC_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
-		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=5)
 		clf_1CNN_k2.loadBestWeights()
 		predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
@@ -189,6 +189,7 @@ def train_CNN_ACC_feature_extractor(datapath):
 		clf_3CNN_k64.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k64_classification_accuracy.txt")
 		'''
 		clf_report = Classifiers.ACC_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)
+		print(np.unique(all_labels_test)," - ",np.unique(all_predictions_1CNN_k2))
 		clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,filename="10_fold_1CNN_k2_classification_report.txt")
 		clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,showGraph=False,saveFig=True,filename="10_fold_1CNN_k2_CM.png")
 		clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_1CNN_k2,filename="10_fold_1CNN_k2_classification_accuracy.txt")
