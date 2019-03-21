@@ -230,6 +230,9 @@ def train_CNN_IMU_feature_extractor(datapath):
 	all_predictions_3CNN_k16 = []
 	all_predictions_3CNN_k32 = []
 	all_predictions_3CNN_k64 = []
+	all_predictions_4CNN_k16 = []
+	all_predictions_4CNN_k32 = []
+	all_predictions_4CNN_k64 = []
 	### Init 10 fold validation
 	for k in range(5):
 		X_train, labels_train, list_ch_train = UCI_HAR.read_IMU_data(data_path=datapath, split="train") # train
@@ -302,6 +305,30 @@ def train_CNN_IMU_feature_extractor(datapath):
 		predictions = clf_3CNN_k64.predict(X_test,batch_size=1)
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
 		all_predictions_3CNN_k64.extend(predictions_inv)
+		#4 layers different k
+		##kernel size exploration - Kernels: 2 - 8 - 16 - 32 - 64
+		#kernel 16
+		clf_4CNN_k16 = Classifiers.IMU_CNN(patience=200,layers=4,kern_size=16,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k8(patience=200,name="3CNN_k8")
+		clf_4CNN_k16.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_4CNN_k16.loadBestWeights()
+		predictions = clf_4CNN_k16.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		all_predictions_4CNN_k16.extend(predictions_inv)
+		#kernel 32
+		clf_4CNN_k32 = Classifiers.IMU_CNN(patience=200,layers=4,kern_size=32,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k32(patience=200,name="3CNN_k32")
+		clf_4CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_4CNN_k32.loadBestWeights()
+		predictions = clf_4CNN_k32.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		all_predictions_4CNN_k32.extend(predictions_inv)
+		#kernel 64
+		clf_4CNN_k64 = Classifiers.IMU_CNN(patience=200,layers=4,kern_size=64,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k64(patience=200,name="3CNN_k64")
+		clf_4CNN_k64.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_4CNN_k64.loadBestWeights()
+		predictions = clf_4CNN_k64.predict(X_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		all_predictions_4CNN_k64.extend(predictions_inv)
+
 
 	clf_report = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)
 	print(np.unique(all_labels_test)," - ",np.unique(all_predictions_1CNN_k2))
