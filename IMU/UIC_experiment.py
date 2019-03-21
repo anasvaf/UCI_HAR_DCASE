@@ -364,6 +364,18 @@ def train_CNN_IMU_feature_extractor(datapath):
 	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_3CNN_k64,classes=classes,filename="IMU_10_fold_3CNN_k64_classification_report.txt")
 	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_3CNN_k64,classes=classes,showGraph=False,saveFig=True,filename="IMU_10_fold_3CNN_k64_CM.png")
 	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_3CNN_k64,filename="IMU_10_fold_3CNN_k64_classification_accuracy.txt")
+	#4 layers k 16
+	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_4CNN_k16,classes=classes,filename="IMU_10_fold_4CNN_k16_classification_report.txt")
+	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_4CNN_k16,classes=classes,showGraph=False,saveFig=True,filename="IMU_10_fold_4CNN_k16_CM.png")
+	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_4CNN_k16,filename="IMU_10_fold_4CNN_k16_classification_accuracy.txt")
+	#3 layers k 32
+	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_4CNN_k32,classes=classes,filename="IMU_10_fold_4CNN_k32_classification_report.txt")
+	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_4CNN_k32,classes=classes,showGraph=False,saveFig=True,filename="IMU_10_fold_4CNN_k32_CM.png")
+	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_4CNN_k32,filename="IMU_10_fold_4CNN_k32_classification_accuracy.txt")
+	#3 layers k 64
+	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_4CNN_k64,classes=classes,filename="IMU_10_fold_4CNN_k64_classification_report.txt")
+	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_4CNN_k64,classes=classes,showGraph=False,saveFig=True,filename="IMU_10_fold_4CNN_k64_CM.png")
+	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_4CNN_k64,filename="IMU_10_fold_4CNN_k64_classification_accuracy.txt")
 
 
 def export_CNN_features(datapath,clf,clf_name):
