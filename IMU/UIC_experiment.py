@@ -447,8 +447,8 @@ def plot_features_PCA(datapath,name,fontsize):
 	ax0.set_ylabel("Component 2")
 	ax1.set_xlabel("Component 1")
 	ax1.set_ylabel("Component 3")
-	ax0.legend()
-	ax1.legend()
+	ax0.legend(loc=1)
+	ax1.legend(loc=1)
 	fig.tight_layout()
 	fig.savefig("PCA_Auto_" + name + ".png",dpi=300)
 
