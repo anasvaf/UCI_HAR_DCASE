@@ -122,7 +122,7 @@ def train_CNN_ACC_feature_extractor(datapath):
 		#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4 and kernel_size = 2
 		#1 CNN layer
 		clf_1CNN_k2 = Classifiers.ACC_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
-		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=5)
+		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 		clf_1CNN_k2.loadBestWeights()
 		predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
@@ -241,7 +241,7 @@ def train_CNN_IMU_feature_extractor(datapath):
 		#Now doing CNN layers exploration - Layers: 1 - 2 - 3 - 4 and kernel_size = 2
 		#1 CNN layer
 		clf_1CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
-		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=5)
+		clf_1CNN_k2.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 		clf_1CNN_k2.loadBestWeights()
 		predictions = clf_1CNN_k2.predict(X_test,batch_size=1)
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
