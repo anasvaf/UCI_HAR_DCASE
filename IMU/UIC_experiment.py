@@ -481,14 +481,14 @@ def mainMenu():
 		return False
 	if sel == "3":
 		fontsize = input("Font size: ")
-		plot_features_PCA(ucihar_datapath,name="1CNN_k2",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="2CNN_k2",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k2",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="4CNN_k2",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k8",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k16",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k32",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k64",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="1CNN_k2_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="2CNN_k2_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k2_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="4CNN_k2_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k8_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k16_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k32_IMU",fontsize=fontsize)
+		plot_features_PCA(ucihar_datapath,name="3CNN_k64_IMU",fontsize=fontsize)
 		return False
 	if sel == "4":
 		plot_hc_features_PCA(ucihar_datapath)
