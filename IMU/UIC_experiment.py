@@ -49,7 +49,7 @@ def train_NN_ACC_HC(datapath):
 	X_train = train_X_df.values
 	X_test = test_X_df.values
 	#labels_train = train_y_df.values
-	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
+	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train)#, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
 	labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
@@ -81,7 +81,7 @@ def train_NN_IMU_HC(datapath):
 		X_train = train_X_df.values
 		X_test = test_X_df.values
 		#labels_train = train_y_df.values
-		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
+		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train)
 		lab_tr[:] = [ y -1 for y in lab_tr ]
 		lab_vld[:] = [ y -1 for y in lab_vld ]
 		labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
@@ -117,7 +117,7 @@ def train_CNN_ACC_feature_extractor(datapath):
 		X_test, labels_test, list_ch_test = UCI_HAR.read_ACC_data(data_path=datapath, split="test") # test
 		assert list_ch_train == list_ch_test, "Mismatch in channels!"
 		X_train, X_test = UCI_HAR.standardize(X_train, X_test)
-		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
+		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train )
 		lab_tr[:] = [ y -1 for y in lab_tr ]
 		lab_vld[:] = [ y -1 for y in lab_vld ]
 		labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
@@ -236,7 +236,7 @@ def train_CNN_IMU_feature_extractor(datapath):
 		X_test, labels_test, list_ch_test = UCI_HAR.read_IMU_data(data_path=datapath, split="test") # test
 		assert list_ch_train == list_ch_test, "Mismatch in channels!"
 		X_train, X_test = UCI_HAR.standardize(X_train, X_test)
-		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
+		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train)#, random_state = 123)
 		lab_tr[:] = [ y -1 for y in lab_tr ]
 		lab_vld[:] = [ y -1 for y in lab_vld ]
 		labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
