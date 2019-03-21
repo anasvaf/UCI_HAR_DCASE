@@ -188,11 +188,11 @@ def train_CNN_ACC_feature_extractor(datapath):
 		clf_3CNN_k64.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="R_"+str(k)+"_3CNN_k64_CM.png")
 		clf_3CNN_k64.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="R_"+str(k)+"_3CNN_k64_classification_accuracy.txt")
 		'''
-		clf_report = Classifiers.ACC_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)
-		print(np.unique(all_labels_test)," - ",np.unique(all_predictions_1CNN_k2))
-		clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,filename="10_fold_1CNN_k2_classification_report.txt")
-		clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,showGraph=False,saveFig=True,filename="10_fold_1CNN_k2_CM.png")
-		clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_1CNN_k2,filename="10_fold_1CNN_k2_classification_accuracy.txt")
+	clf_report = Classifiers.ACC_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)
+	print(np.unique(all_labels_test)," - ",np.unique(all_predictions_1CNN_k2))
+	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,filename="10_fold_1CNN_k2_classification_report.txt")
+	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,showGraph=False,saveFig=True,filename="10_fold_1CNN_k2_CM.png")
+	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_1CNN_k2,filename="10_fold_1CNN_k2_classification_accuracy.txt")
 
 def export_CNN_features(datapath,clf,clf_name):
 	X_train, labels_train, list_ch_train = UCI_HAR.read_data(data_path=datapath, split="train") # train
