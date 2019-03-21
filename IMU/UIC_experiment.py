@@ -317,7 +317,7 @@ def mainMenu():
 	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n5. Train Test HC Features\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
-		train_CNN_feature_extractor(ucihar_datapath)
+		train_CNN_ACC_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
 		clf_1CNN_k2 = Classifiers.IMU_CNN(layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(name="1CNN_k2")
