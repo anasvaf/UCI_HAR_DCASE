@@ -461,22 +461,22 @@ def mainMenu():
 		train_CNN_ACC_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
-		clf_1CNN_k2 = Classifiers.IMU_CNN(layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(name="1CNN_k2")
+		clf_1CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(name="1CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_1CNN_k2,"1CNN_k2_IMU")
-		clf_2CNN_k2 = Classifiers.IMU_CNN(layers=2,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_2CNN_k2(name="2CNN_k2")
+		clf_2CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=2,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_2CNN_k2(name="2CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_2CNN_k2,"2CNN_k2_IMU")
-		clf_3CNN_k2 = Classifiers.IMU_CNN(layers=3,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_3CNN_k2(name="3CNN_k2")
+		clf_3CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_3CNN_k2(name="3CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k2,"3CNN_k2_IMU")
-		clf_4CNN_k2 = Classifiers.IMU_CNN(layers=4,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_4CNN_k2(name="4CNN_k2")
+		clf_4CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=4,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_4CNN_k2(name="4CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_4CNN_k2,"4CNN_k2_IMU")
 		#gen featurs kernel size
-		clf_3CNN_k8 = Classifiers.IMU_CNN(layers=3,kern_size=8,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k8(name="3CNN_k8")
+		clf_3CNN_k8 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=8,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k8(name="3CNN_k8")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k8,"3CNN_k8_IMU")
-		clf_3CNN_k16 = Classifiers.IMU_CNN(layers=3,kern_size=16,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k16(name="3CNN_k16")
+		clf_3CNN_k16 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=16,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k16(name="3CNN_k16")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k16,"3CNN_k16_IMU")
-		clf_3CNN_k32 = Classifiers.IMU_CNN(layers=3,kern_size=32,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k32(name="3CNN_k32")
+		clf_3CNN_k32 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=32,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k32(name="3CNN_k32")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k32,"3CNN_k32_IMU")
-		clf_3CNN_k64 = Classifiers.IMU_CNN(layers=3,kern_size=64,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k64(name="3CNN_k64")
+		clf_3CNN_k64 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k64(name="3CNN_k64")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
 		return False
 	if sel == "3":
