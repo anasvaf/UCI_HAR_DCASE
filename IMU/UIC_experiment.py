@@ -347,7 +347,9 @@ def export_CNN_features(datapath,clf,clf_name):
 	print(auto_feats_df.head())
 	auto_feats_df.to_csv('auto_train_features_'+clf_name+'.csv.gz',compression='gzip',index=False,header=None)
 
-def plot_hc_features_PCA(datapath):
+def plot_hc_features_PCA(datapath,fontsize):
+	font = {'family':'sans-serif', 'size':int(fontsize)}
+	matplotlib.rc('font',**font)
 	train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
 	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
 	train_y = train_y_df['label'].values
@@ -484,7 +486,7 @@ def mainMenu():
 		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
 		return False
 	if sel == "3":
-		fontsize = input("Font size: ")
+		fontsize = input("Font size(13 suggested): ")
 		plot_features_PCA(ucihar_datapath,name="1CNN_k2_IMU",fontsize=fontsize)
 		plot_features_PCA(ucihar_datapath,name="2CNN_k2_IMU",fontsize=fontsize)
 		plot_features_PCA(ucihar_datapath,name="3CNN_k2_IMU",fontsize=fontsize)
@@ -495,7 +497,8 @@ def mainMenu():
 		plot_features_PCA(ucihar_datapath,name="3CNN_k64_IMU",fontsize=fontsize)
 		return False
 	if sel == "4":
-		plot_hc_features_PCA(ucihar_datapath)
+		fontsize = input("Font size(13 suggested): ")
+		plot_hc_features_PCA(ucihar_datapath,fontsize)
 		return False
 	if sel == "5":
 		#train_NN_IMU_HC(ucihar_datapath)
