@@ -95,15 +95,15 @@ def train_NN_IMU_HC(datapath):
 	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="NN_IMU_HC_classification_accuracy.txt")
 
 def train_CNN_ACC_feature_extractor(datapath):
-	X_train, labels_train, list_ch_train = UCI_HAR.read_ACC_data(data_path=datapath, split="train") # train
-	X_test, labels_test, list_ch_test = UCI_HAR.read_ACC_data(data_path=datapath, split="test") # test
-	assert list_ch_train == list_ch_test, "Mismatch in channels!"
-	X_train, X_test = UCI_HAR.standardize(X_train, X_test)
-	print("Data size:", len(X_train), " - ", len(X_train[0]))
+	#print("Data size:", len(X_train), " - ", len(X_train[0]))
 	all_labels_test = []
 	all_predictions_1CNN_k2 = []
 	### Init 10 fold validation
 	for k in range(2):
+		X_train, labels_train, list_ch_train = UCI_HAR.read_ACC_data(data_path=datapath, split="train") # train
+		X_test, labels_test, list_ch_test = UCI_HAR.read_ACC_data(data_path=datapath, split="test") # test
+		assert list_ch_train == list_ch_test, "Mismatch in channels!"
+		X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train, random_state = 123)
 		lab_tr[:] = [ y -1 for y in lab_tr ]
 		lab_vld[:] = [ y -1 for y in lab_vld ]
