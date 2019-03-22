@@ -38,7 +38,7 @@ for name in feat_names:
 body_feat_names = []
 for name in feat_names:
 	if not "ravity" in name:
-		body_feat_names = []
+		body_feat_names.append(name)
 
 #print(feat_names[0]," ",feat_names[1])
 print("N. of features: ACC only ",len(exp_feat_names)," - ALL ",len(feat_names), " - TIME only ",len(time_feat_names), " - BODY only ", len(body_feat_names))
