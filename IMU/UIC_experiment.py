@@ -107,6 +107,35 @@ def train_NN_IMU_HC(datapath):
 	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_IMU_HC_CM.png")
 	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="NN_IMU_HC_classification_accuracy.txt")
 
+def train_NN_TIME_HC(datapath):
+	all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	train_X_df = all_train_X_df[time_feat_names]
+	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
+	all_test_X_df = pd.read_csv(datapath+"test/X_test.txt",names=feat_names,header=None,sep="\s+",engine='python')
+	test_X_df = all_test_X_df[time_feat_names]
+	test_y_df = pd.read_csv(datapath+"test/y_test.txt",names=['label'],header=None)
+	labels_train = train_y_df['label'].values
+	labels_test = test_y_df['label'].values
+	#UCI_NN_HC
+	X_train = train_X_df.values
+	X_test = test_X_df.values
+	#labels_train = train_y_df.values
+	X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train)#, random_state = 123)
+	lab_tr[:] = [ y -1 for y in lab_tr ]
+	lab_vld[:] = [ y -1 for y in lab_vld ]
+	labels_test[:] = [ y -1 for y in labels_test ] #labels [1-6] -> [0-5]
+	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
+	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
+	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
+	clf_NN_HC = Classifiers.UCI_NN_TIME_HC(patience=200,name="NN_HC")
+	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+	clf_NN_HC.loadBestWeights()
+	predictions = clf_NN_HC.predict(X_test,batch_size=1)
+	predictions_inv = [ [np.argmax(x)] for x in predictions]
+	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="NN_TIME_HC_classification_report.txt")
+	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_TIME_HC_CM.png")
+	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="NN_TIME_HC_classification_accuracy.txt")
+	
 def train_CNN_ACC_feature_extractor(datapath):
 	#print("Data size:", len(X_train), " - ", len(X_train[0]))
 	all_labels_test = []
@@ -554,7 +583,8 @@ def mainMenu():
 		return False
 	if sel == "5":
 		train_NN_IMU_HC(ucihar_datapath)
-		#train_NN_ACC_HC(ucihar_datapath)
+		train_NN_ACC_HC(ucihar_datapath)
+		train_NN_TIME_HC(ucihar_datapath)
 		return False
 	else:
 		return True
