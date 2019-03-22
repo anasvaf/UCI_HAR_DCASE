@@ -219,11 +219,11 @@ class ACC_CNN(BaseClassifier):
 			self.name2layer[layer.name] = layer
 
 class IMU_CNN(BaseClassifier):
-	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
+	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16,num_filters=12):
 		self.name = str(layers)+"-CNN_k"+str(kern_size)+"_IMU"
 		super().__init__(self.name,patience,fontSize)
 		self.model = Sequential()
-		filters = 12
+		filters = num_filters
 		self.model.add( Conv1D(filters,input_shape=(128,9),kernel_size=kern_size,padding='same',activation='relu', name="layer_1") )
 		self.model.add(MaxPooling1D())
 		for i in range(2,layers+1):
