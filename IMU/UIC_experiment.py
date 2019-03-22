@@ -155,7 +155,7 @@ def train_CNN_IMU_24filters(datapath):
 		y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 		y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
 		clf_3CNN_k32 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=32,divide_kernel_size=True,num_filters=24)#Classifiers.Hybrid_1CNN_k2(patience=200,name="1CNN_k2")
-		clf_3CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_3CNN_k32.fit(X_tr,y_tr,X_vld,y_vld,batch_size=512,epochs=150)
 		clf_3CNN_k32.loadBestWeights()
 		predictions = clf_3CNN_k32.predict(X_test,batch_size=1)
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
