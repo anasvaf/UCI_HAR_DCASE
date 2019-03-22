@@ -157,6 +157,7 @@ class BaseClassifier:
 	def reset_states(self):
 		self.model.reset_states()
 
+#Classifier using Human Crafted Features (Accelerometer only)
 class UCI_NN_ACC_HC(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
 		self.name = name + "_HUMAN_CRAFTED_ACC"
@@ -167,6 +168,7 @@ class UCI_NN_ACC_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
+#Classifier using Human Crafted Features (Accelerometer and gyroscope)
 class UCI_NN_IMU_HC(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
 		self.name = name + "_HUMAN_CRAFTED_IMU"
@@ -177,8 +179,19 @@ class UCI_NN_IMU_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
+#Classifier using Human Crafted Features (Acc+Gyro Time domain only)
+class UCI_NN_TIME_HC(BaseClassifier):
+	def __init__(self,patience,name,fontSize=16):
+		self.name = name + "_HUMAN_CRAFTED_TIME"
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		self.model.add( Dense(64,input_dim=272,activation='relu', name="layer_1") )
+		self.model.add( Dense(6,activation='linear',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
 
 
+#CNN based classifiers
 class ACC_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
 		self.name = str(layers)+"-CNN_k"+str(kern_size)
