@@ -193,7 +193,7 @@ class UCI_NN_TIME_HC(BaseClassifier):
 #Classifier using Human Crafted Features (ACC Body only, no GRAVITY)
 class UCI_NN_BODY_HC(BaseClassifier):
 	def __init__(self,patience,name,fontSize=16):
-		self.name = name + "_HUMAN_CRAFTED_TIME"
+		self.name = name + "_HUMAN_CRAFTED_BODY"
 		super().__init__(name,patience,fontSize)
 		self.model = Sequential()
 		self.model.add( Dense(64,input_dim=501,activation='relu', name="layer_1") )
