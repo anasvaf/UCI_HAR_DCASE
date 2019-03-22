@@ -21,14 +21,21 @@ classes = ["WALKING", "W. UPSTAIRS", "W. DOWNSTAIRS", "SITTING", "STANDING", "LA
 #Load HC features info from UCI-HAR dataset
 features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
 #print(features_desc_df.head())
+#All HC features (561)
 feat_names = features_desc_df['feat_name'].values.tolist()
+#Only ACC features: excluding GYRO
 exp_feat_names = []
 for name in feat_names:
 	if  not "Gyro" in name:
 		exp_feat_names.append(name)
+#Time domain features
+time_feat_names = []
+for name in feat_names:
+	if  not "fBody" in name:
+		time_feat_names.append(name)
 
-print(feat_names[0]," ",feat_names[1])
-print("N. of features: ",len(exp_feat_names)," / ",len(feat_names))
+#print(feat_names[0]," ",feat_names[1])
+print("N. of features: ACC only ",len(exp_feat_names)," - ALL ",len(feat_names), " - TIME only ",len(time_feat_names))
 
 
 #auto features names f1, f2 ..
