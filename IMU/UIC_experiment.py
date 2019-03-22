@@ -69,7 +69,7 @@ def train_NN_ACC_HC(datapath):
 	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-	clf_NN_HC = Classifiers.UCI_NN_ACC_HC(patience=200,name="NN_HC")
+	clf_NN_HC = Classifiers.UCI_NN_ACC_HC(patience=200,name="NN_ACC_HC")
 	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_NN_HC.loadBestWeights()
 	predictions = clf_NN_HC.predict(X_test,batch_size=1)
@@ -133,14 +133,14 @@ def train_NN_BODY_HC(datapath):
 	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-	clf_NN_HC = Classifiers.UCI_NN_TIME_HC(patience=200,name="NN_HC")
+	clf_NN_HC = Classifiers.UCI_NN_BODY_HC(patience=200,name="NN_BODY_HC")
 	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_NN_HC.loadBestWeights()
 	predictions = clf_NN_HC.predict(X_test,batch_size=1)
 	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="NN_TIME_HC_classification_report.txt")
-	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_TIME_HC_CM.png")
-	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="NN_TIME_HC_classification_accuracy.txt")
+	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="NN_BODY_HC_classification_report.txt")
+	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="NN_BODY_HC_CM.png")
+	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="NN_BODY_HC_classification_accuracy.txt")
 
 def train_NN_TIME_HC(datapath):
 	all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
@@ -162,7 +162,7 @@ def train_NN_TIME_HC(datapath):
 	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-	clf_NN_HC = Classifiers.UCI_NN_TIME_HC(patience=200,name="NN_HC")
+	clf_NN_HC = Classifiers.UCI_NN_TIME_HC(patience=200,name="NN_TIME_HC")
 	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
 	clf_NN_HC.loadBestWeights()
 	predictions = clf_NN_HC.predict(X_test,batch_size=1)
@@ -650,6 +650,7 @@ def mainMenu():
 		train_NN_IMU_HC(ucihar_datapath)
 		train_NN_ACC_HC(ucihar_datapath)
 		train_NN_TIME_HC(ucihar_datapath)
+		train_NN_BODY_HC(ucihar_datapath)
 		return False
 	elif sel == "6":
 		train_CNN_IMU_24filters(ucihar_datapath)

@@ -190,8 +190,21 @@ class UCI_NN_TIME_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
+#Classifier using Human Crafted Features (ACC Body only, no GRAVITY)
+class UCI_NN_BODY_HC(BaseClassifier):
+	def __init__(self,patience,name,fontSize=16):
+		self.name = name + "_HUMAN_CRAFTED_TIME"
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		self.model.add( Dense(64,input_dim=501,activation='relu', name="layer_1") )
+		self.model.add( Dense(6,activation='linear',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
+
 
 #CNN based classifiers
+
+#CNN using ACC only (BODY+GRAVITY input: 128x6)
 class ACC_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16):
 		self.name = str(layers)+"-CNN_k"+str(kern_size)
@@ -218,6 +231,7 @@ class ACC_CNN(BaseClassifier):
 		for layer in self.model.layers:
 			self.name2layer[layer.name] = layer
 
+#CNN using ACC and GYRO (ACC_GRAVITY+ACC_BODY+GYRO input: 128x9)
 class IMU_CNN(BaseClassifier):
 	def __init__(self,patience,layers=3,kern_size=2,divide_kernel_size=False,fontSize=16,num_filters=12):
 		self.name = str(layers)+"-CNN_k"+str(kern_size)+"_IMU"
