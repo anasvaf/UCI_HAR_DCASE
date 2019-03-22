@@ -142,8 +142,8 @@ def train_CNN_IMU_24filters(datapath):
 	all_predictions = []
 	### Init 10 fold validation
 	for k in range(5):
-		X_train, labels_train, list_ch_train = UCI_HAR.read_ACC_data(data_path=datapath, split="train") # train
-		X_test, labels_test, list_ch_test = UCI_HAR.read_ACC_data(data_path=datapath, split="test") # test
+		X_train, labels_train, list_ch_train = UCI_HAR.read_IMU_data(data_path=datapath, split="train") # train
+		X_test, labels_test, list_ch_test = UCI_HAR.read_IMU_data(data_path=datapath, split="test") # test
 		assert list_ch_train == list_ch_test, "Mismatch in channels!"
 		X_train, X_test = UCI_HAR.standardize(X_train, X_test)
 		X_tr, X_vld, lab_tr, lab_vld = train_test_split(X_train, labels_train, test_size=0.1, stratify = labels_train )
@@ -161,9 +161,9 @@ def train_CNN_IMU_24filters(datapath):
 		predictions_inv = [ [np.argmax(x)] for x in predictions]
 		all_predictions.extend(predictions_inv)
 	clf_report = Classifiers.ACC_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)
-	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,filename="5_fold_3CNN_k32_24f_classification_report.txt")
-	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions_1CNN_k2,classes=classes,showGraph=False,saveFig=True,filename="5_fold_3CNN_k32_24f_CM.png")
-	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions_1CNN_k2,filename="5_fold_3CNN_k32_24f_classification_accuracy.txt")
+	clf_report.printClassificationReport(true=all_labels_test,pred=all_predictions,classes=classes,filename="5_fold_3CNN_k32_24f_classification_report.txt")
+	clf_report.plotConfusionMatrix(true=all_labels_test,pred=all_predictions,classes=classes,showGraph=False,saveFig=True,filename="5_fold_3CNN_k32_24f_CM.png")
+	clf_report.printAccuracyScore(true=all_labels_test,pred=all_predictions,filename="5_fold_3CNN_k32_24f_classification_accuracy.txt")
 
 
 def train_CNN_ACC_feature_extractor(datapath):
