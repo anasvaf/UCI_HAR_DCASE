@@ -16,7 +16,7 @@ home = expanduser("~")
 #change this to point UCI_HAR data path
 ucihar_datapath = home+"/python/data/UCI_HAR_Dataset/"
 
-classes = ["WALKING", "WALK_UPSTAIRS", "WALK_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
+classes = ["WALKING", "W. UPSTAIRS", "W. DOWNSTAIRS", "SITTING", "STANDING", "LAYING"]
 
 #Load HC features info from UCI-HAR dataset
 features_desc_df = pd.read_csv(ucihar_datapath+"/features.txt", sep='\s',engine='python',names=['feat_id','feat_name'])
