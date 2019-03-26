@@ -201,6 +201,17 @@ class UCI_NN_BODY_HC(BaseClassifier):
 		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
 		self.model.summary()
 
+#Classifier using AutoCNN and same structure as HCF
+class UCI_AUTOCNN_IMU_HC(BaseClassifier):
+	def __init__(self,patience,name,fontSize=16):
+		self.name = name + "_HUMAN_CRAFTED_BODY"
+		super().__init__(name,patience,fontSize)
+		self.model = Sequential()
+		self.model.add( Dense(64,input_dim=501,activation='relu', name="layer_1") )
+		self.model.add( Dense(6,activation='linear',  name="output_layer"))
+		self.model.compile( loss='mse',metrics=['mse','acc'], optimizer='adam' )
+		self.model.summary()
+
 
 #CNN based classifiers
 
