@@ -642,7 +642,7 @@ def plot_features_PCA(datapath,name,fontsize):
 
 #Simple CLI interface
 def mainMenu():
-	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n5. Train Test HC Features\n6. Train 3CNN 24 filters\n\n Press any other key to exit")
+	print("1. Train CNN feature extractor\n2. Extract CNN Auto Features\n3. Plot Auto features PCA\n4. Plot Human Crafted Features PCA\n5. Train Test HC Features\n6. Train 3CNN 24 filters\n7. Train test AutoCNN MLP\n\n Press any other key to exit")
 	sel = input("")
 	if sel == "1":
 		train_CNN_IMU_feature_extractor(ucihar_datapath)
@@ -690,6 +690,9 @@ def mainMenu():
 		return False
 	elif sel == "6":
 		train_CNN_IMU_24filters(ucihar_datapath)
+		return False
+	elif sel == "7":
+		train_test_AutoCNN_IMU(ucihar_datapath)
 		return False
 	else:
 		return True
