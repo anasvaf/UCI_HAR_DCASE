@@ -62,13 +62,13 @@ def train_test_AutoCNN_IMU(datapath):
 	auto_features_train = clf.get_layer_output(X_train,"automatic_features")
 	auto_features_test = clf.get_layer_output(X_test,"automatic_features")
 	print("Features shape: ",auto_features_train.shape)
-	input("pause here. Set inout size on classifier")
-	auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
-	print(auto_feats_df.head())
-	auto_feats_df.to_csv('auto_train_features_'+clf_name+'.csv.gz',compression='gzip',index=False,header=None)
+	#input("pause here. Set inout size on classifier")
+	#auto_feats_df = pd.DataFrame(auto_features,columns=auto_feats_names)
+	#print(auto_feats_df.head())
+	#auto_feats_df.to_csv('auto_train_features_'+clf_name+'.csv.gz',compression='gzip',index=False,header=None)
 	#train_X_df = pd.read_csv("auto_train_features_"+cnn+".csv.gz",names=auto_feats_names,header=None,sep=",",engine='python',compression='gzip')
-	train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
-	test_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
+	#train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
+	#test_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
 	X_tr, X_vld, lab_tr, lab_vld = train_test_split(auto_features_train, labels_train, test_size=0.1, stratify = labels_train)#, random_state = 123)
 	lab_tr[:] = [ y -1 for y in lab_tr ]
 	lab_vld[:] = [ y -1 for y in lab_vld ]
@@ -76,14 +76,19 @@ def train_test_AutoCNN_IMU(datapath):
 	y_tr = to_categorical(lab_tr,num_classes=6)#one_hot(lab_tr)
 	y_vld = to_categorical(lab_vld,num_classes=6)#one_hot(lab_vld)
 	y_test = to_categorical(labels_test,num_classes=6)#one_hot(labels_test)
-	clf_NN_HC = Classifiers.UCI_AUTOCNN_IMU_HC(patience=200,name="NN_ACC_HC")
-	clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
-	clf_NN_HC.loadBestWeights()
-	predictions = clf_NN_HC.predict(auto_features_test,batch_size=1)
-	predictions_inv = [ [np.argmax(x)] for x in predictions]
-	clf_NN_HC.printClassificationReport(true=labels_test,pred=predictions_inv,classes=classes,filename="AUTOCNN_IMU_FINAL_classification_report.txt")
-	clf_NN_HC.plotConfusionMatrix(true=labels_test,pred=predictions_inv,classes=classes,showGraph=False,saveFig=True,filename="AUTOCNN_IMU_FINAL_CM.png")
-	clf_NN_HC.printAccuracyScore(true=labels_test,pred=predictions_inv,filename="AUTOCNN_IMU_FINAL_classification_accuracy.txt")
+	clf_NN_HC = Classifiers.UCI_AUTOCNN_IMU_HC(patience=200,name="CNN_AUTO_FINAL")
+	all_predictions = []
+	all_test = []
+	for k in range(5):
+		clf_NN_HC.fit(X_tr,y_tr,X_vld,y_vld,batch_size=1024,epochs=150)
+		clf_NN_HC.loadBestWeights()
+		predictions = clf_NN_HC.predict(auto_features_test,batch_size=1)
+		predictions_inv = [ [np.argmax(x)] for x in predictions]
+		all_predictions.extend(predictions_inv)
+		all_test.extend(labels_test)
+	clf_NN_HC.printClassificationReport(true=all_test,pred=all_predictions,classes=classes,filename="AUTOCNN_IMU_FINAL_classification_report.txt")
+	clf_NN_HC.plotConfusionMatrix(true=all_test,pred=all_predictions,classes=classes,showGraph=False,saveFig=True,filename="AUTOCNN_IMU_FINAL_CM.png")
+	clf_NN_HC.printAccuracyScore(true=all_test,pred=all_predictions,filename="AUTOCNN_IMU_FINAL_classification_accuracy.txt")
 
 def train_NN_ACC_HC(datapath):
 	all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
@@ -117,7 +122,7 @@ def train_NN_ACC_HC(datapath):
 def train_NN_IMU_HC(datapath):
 	all_labels_test = []
 	all_predictions = []
-	for k in range(5):
+	for k in range(10):
 		all_train_X_df = pd.read_csv(datapath+"train/X_train.txt",names=feat_names,header=None,sep="\s+",engine='python')
 		train_X_df = all_train_X_df[feat_names]
 		train_y_df = pd.read_csv(datapath+"train/y_train.txt",names=['label'],header=None)
@@ -646,10 +651,10 @@ def mainMenu():
 	sel = input("")
 	if sel == "1":
 		train_CNN_IMU_feature_extractor(ucihar_datapath)
-		train_CNN_ACC_feature_extractor(ucihar_datapath)
+		#train_CNN_ACC_feature_extractor(ucihar_datapath)
 		return False
 	if sel == "2":
-		clf_1CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(name="1CNN_k2")
+		'''clf_1CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=1,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_1CNN_k2(name="1CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_1CNN_k2,"1CNN_k2_IMU")
 		clf_2CNN_k2 = Classifiers.IMU_CNN(patience=200,layers=2,kern_size=2,divide_kernel_size=False)#Classifiers.Hybrid_2CNN_k2(name="2CNN_k2")
 		export_CNN_features(ucihar_datapath,clf_2CNN_k2,"2CNN_k2_IMU")
@@ -661,22 +666,22 @@ def mainMenu():
 		clf_3CNN_k8 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=8,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k8(name="3CNN_k8")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k8,"3CNN_k8_IMU")
 		clf_3CNN_k16 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=16,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k16(name="3CNN_k16")
-		export_CNN_features(ucihar_datapath,clf_3CNN_k16,"3CNN_k16_IMU")
+		export_CNN_features(ucihar_datapath,clf_3CNN_k16,"3CNN_k16_IMU")'''
 		clf_3CNN_k32 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=32,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k32(name="3CNN_k32")
 		export_CNN_features(ucihar_datapath,clf_3CNN_k32,"3CNN_k32_IMU")
-		clf_3CNN_k64 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k64(name="3CNN_k64")
-		export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
+		#clf_3CNN_k64 = Classifiers.IMU_CNN(patience=200,layers=3,kern_size=64,divide_kernel_size=True)#Classifiers.Hybrid_3CNN_k64(name="3CNN_k64")
+		#export_CNN_features(ucihar_datapath,clf_3CNN_k64,"3CNN_k64_IMU")
 		return False
 	if sel == "3":
 		fontsize = input("Font size(13 suggested): ")
-		plot_features_PCA(ucihar_datapath,name="1CNN_k2_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="2CNN_k2_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k2_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="4CNN_k2_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k8_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k16_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="1CNN_k2_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="2CNN_k2_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="3CNN_k2_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="4CNN_k2_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="3CNN_k8_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="3CNN_k16_IMU",fontsize=fontsize)
 		plot_features_PCA(ucihar_datapath,name="3CNN_k32_IMU",fontsize=fontsize)
-		plot_features_PCA(ucihar_datapath,name="3CNN_k64_IMU",fontsize=fontsize)
+		#plot_features_PCA(ucihar_datapath,name="3CNN_k64_IMU",fontsize=fontsize)
 		return False
 	if sel == "4":
 		fontsize = input("Font size(13 suggested): ")
@@ -685,8 +690,8 @@ def mainMenu():
 	if sel == "5":
 		train_NN_IMU_HC(ucihar_datapath)
 		train_NN_ACC_HC(ucihar_datapath)
-		train_NN_TIME_HC(ucihar_datapath)
-		train_NN_BODY_HC(ucihar_datapath)
+		#train_NN_TIME_HC(ucihar_datapath)
+		#train_NN_BODY_HC(ucihar_datapath)
 		return False
 	elif sel == "6":
 		train_CNN_IMU_24filters(ucihar_datapath)
