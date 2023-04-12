@@ -1,4 +1,4 @@
-# UIC_2019
+# UCI_HAR_DCASE
 Code for audio signal processing and classification
 - Original dataset from DCASE 2017 Task 1 dataset - http://www.cs.tut.fi/sgn/arg/dcase2017/challenge/task-acoustic-scene-classification
 - Original classes are 15 -- we reduce them to 3 (indoor, outdoor, vehicle)
